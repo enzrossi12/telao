@@ -62,16 +62,16 @@ VITE_TOKEN_URL=https://<seu-app>.vercel.app/api/token
 ---
 
 ## Fase 1 — Serviço de token
-- [ ] `apps/token/api/token.ts`: aceita `POST { name, password }`.
-- [ ] Rejeitar com 401 se `password !== GROUP_PASSWORD` (comparação em tempo constante).
-- [ ] Validar `name`: 2–24 caracteres, sem espaços nas pontas.
-- [ ] `identity` = nome + sufixo aleatório curto (evita conflito de nomes iguais);
+- [x] `apps/token/api/token.ts`: aceita `POST { name, password }`.
+- [x] Rejeitar com 401 se `password !== GROUP_PASSWORD` (comparação em tempo constante).
+- [x] Validar `name`: 2–24 caracteres, sem espaços nas pontas.
+- [x] `identity` = nome + sufixo aleatório curto (evita conflito de nomes iguais);
       `name` = nome exibido.
-- [ ] Permissões do token: `roomJoin`, `room: ROOM_NAME`, `canSubscribe: true`,
+- [x] Permissões do token: `roomJoin`, `room: ROOM_NAME`, `canSubscribe: true`,
       `canPublish: true`, `canPublishSources: [CAMERA, SCREEN_SHARE, SCREEN_SHARE_AUDIO]`,
       `canPublishData: false`. Validade de 6 horas.
-- [ ] Responder `{ token }`; CORS liberado (o app Electron chama de `file://`/localhost).
-- [ ] README curto em `apps/token` explicando o deploy (`npx vercel`, variáveis de ambiente).
+- [x] Responder `{ token }`; CORS liberado (o app Electron chama de `file://`/localhost).
+- [x] README curto em `apps/token` explicando o deploy (`npx vercel`, variáveis de ambiente).
 
 **Aceite:** com `vercel dev`, um `curl` com senha certa devolve um token; com senha errada
 devolve 401. Decodificar o JWT mostra as fontes permitidas corretas e nenhuma permissão de
