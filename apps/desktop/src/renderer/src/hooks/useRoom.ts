@@ -1,5 +1,13 @@
 import { useCallback, useRef, useState } from 'react'
-import { DisconnectReason, Participant, Room, RoomEvent, Track, VideoTrack } from 'livekit-client'
+import {
+  AudioTrack,
+  DisconnectReason,
+  Participant,
+  Room,
+  RoomEvent,
+  Track,
+  VideoTrack
+} from 'livekit-client'
 import { fetchToken, JoinError, TokenError } from '../lib/token'
 
 export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected' | 'reconnecting'
@@ -13,6 +21,7 @@ export interface RoomParticipant {
   isLive: boolean
   screenTrack: VideoTrack | null
   isWatchingScreen: boolean
+  screenAudioTrack: AudioTrack | null
 }
 
 interface UseRoom {
@@ -51,7 +60,9 @@ function toRoomParticipant(participant: Participant, isLocal: boolean): RoomPart
     isLive: participant.isScreenShareEnabled,
     screenTrack: screen?.videoTrack ?? null,
     // Our own screen is a local preview: it needs no subscription.
-    isWatchingScreen: isLocal ? Boolean(screen) : (screen?.isSubscribed ?? false)
+    isWatchingScreen: isLocal ? Boolean(screen) : (screen?.isSubscribed ?? false),
+    screenAudioTrack:
+      participant.getTrackPublication(Track.Source.ScreenShareAudio)?.audioTrack ?? null
   }
 }
 
