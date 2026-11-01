@@ -88,7 +88,9 @@ if (!allowMultipleInstances && !app.requestSingleInstanceLock()) {
   })
 
   app.whenReady().then(() => {
-    app.setAppUserModelId('com.telao.app')
+    // Shared with the installed app's shortcut. A dev run under electron.exe must not claim it, or
+    // Windows ties the Electron icon to this ID and shows it for the installed app too.
+    if (app.isPackaged) app.setAppUserModelId('com.telao.app')
     registerAppInfoIpc()
     registerCredentialsIpc()
     registerScreenIpc()
