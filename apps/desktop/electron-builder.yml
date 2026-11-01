@@ -11,9 +11,16 @@ asarUnpack:
 win:
   executableName: telao
   icon: build/icon.ico
+  target:
+    - target: nsis
+      arch:
+        - x64
 nsis:
   artifactName: telao-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
+  oneClick: true
+  perMachine: false
   createDesktopShortcut: always
+  createStartMenuShortcut: true
 npmRebuild: false
