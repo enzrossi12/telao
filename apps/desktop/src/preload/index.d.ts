@@ -1,4 +1,4 @@
-import { SavedCredentials, ScreenSource } from '../shared/ipc'
+import { SavedCredentials, ScreenAudioSupport, ScreenSource } from '../shared/ipc'
 
 declare global {
   interface Window {
@@ -8,7 +8,7 @@ declare global {
       saveCredentials: (credentials: SavedCredentials) => Promise<void>
       listScreenSources: () => Promise<ScreenSource[]>
       selectScreenSource: (id: string) => Promise<void>
-      isScreenAudioSupported: () => Promise<boolean>
+      getScreenAudioSupport: () => Promise<ScreenAudioSupport>
       startScreenAudio: () => Promise<void>
       stopScreenAudio: () => Promise<void>
       onScreenAudioChunk: (listener: (chunk: Uint8Array<ArrayBuffer>) => void) => () => void

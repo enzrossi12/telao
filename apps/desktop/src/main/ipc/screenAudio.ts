@@ -3,11 +3,13 @@ import { app, ipcMain, WebContents } from 'electron'
 import { release } from 'os'
 import { promisify } from 'util'
 import type { LoopbackCapture } from 'loopback-capture'
-import { IPC } from '../../shared/ipc'
+import { IPC, ScreenAudioSupport } from '../../shared/ipc'
 import { isAppFrame } from './sender'
 
-// WASAPI process loopback, which excludes a process, does not exist on older Windows builds.
-const MIN_WINDOWS_BUILD = 20348
+// WASAPI process loopback, which excludes a process, is documented from build 20348 on and is
+// reported to work from Windows 10 2004. Older builds would fail to activate it.
+const OFFICIAL_WINDOWS_BUILD = 20348
+const MIN_WINDOWS_BUILD = 19041
 
 const DISCORD_PROCESS_QUERY = `ConvertTo-Json -Compress -InputObject @(
   Get-CimInstance Win32_Process -Filter "Name='Discord.exe' OR Name='DiscordPTB.exe' OR Name='DiscordCanary.exe'" |
@@ -22,8 +24,10 @@ const execFileAsync = promisify(execFile)
 
 let capture: LoopbackCapture | null = null
 
-function isScreenAudioSupported(): boolean {
-  return Number(release().split('.')[2]) >= MIN_WINDOWS_BUILD
+function getScreenAudioSupport(): ScreenAudioSupport {
+  const build = Number(release().split('.')[2])
+  if (build >= OFFICIAL_WINDOWS_BUILD) return 'full'
+  return build >= MIN_WINDOWS_BUILD ? 'experimental' : 'none'
 }
 
 // Excluding the root takes all of Discord's child processes with it. A failed query must reject:
@@ -59,14 +63,14 @@ async function startScreenAudio(sender: WebContents): Promise<void> {
 }
 
 export function registerScreenAudioIpc(): void {
-  ipcMain.handle(IPC.IS_SCREEN_AUDIO_SUPPORTED, (event) => {
+  ipcMain.handle(IPC.GET_SCREEN_AUDIO_SUPPORT, (event) => {
     if (!isAppFrame(event)) throw new Error('Untrusted sender')
-    return isScreenAudioSupported()
+    return getScreenAudioSupport()
   })
 
   ipcMain.handle(IPC.START_SCREEN_AUDIO, (event) => {
     if (!isAppFrame(event)) throw new Error('Untrusted sender')
-    if (!isScreenAudioSupported()) throw new Error('Unsupported Windows build')
+    if (getScreenAudioSupport() === 'none') throw new Error('Unsupported Windows build')
     return startScreenAudio(event.sender)
   })
 

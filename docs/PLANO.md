@@ -159,10 +159,12 @@ funcionando, janela volta na mesma posição.
 ## Fase 6 — Áudio da tela (opcional, igual ao "compartilhar com som" do Discord)
 > **Decisão do usuário:** o grupo usa o Telão durante ligações no Discord, então o som do Discord
 > não pode ir junto. Isso exige captura por processo: o usuário aprovou o módulo nativo
-> `loopback-capture` (versão fixa) no lugar do `audio: 'loopback'` do Electron. Esse recurso não
-> existe em Windows anterior ao build 20348, e nesse caso a opção de som fica bloqueada com aviso.
+> `loopback-capture` (versão fixa) no lugar do `audio: 'loopback'` do Electron. A Microsoft só
+> documenta esse recurso a partir do build 20348, mas há relatos de que funciona desde o Windows
+> 10 2004 (build 19041). A pedido do usuário, ele fica liberado desde esse build, com aviso de
+> experimental abaixo do 20348. Em builds mais antigos a opção fica bloqueada com aviso.
 
-- [x] Checkbox "Compartilhar som" no seletor, bloqueado com aviso no Windows 10.
+- [x] Checkbox "Compartilhar som" no seletor, bloqueado com aviso antes do Windows 10 2004.
 - [x] Capturar o som do sistema no main com `loopback-capture`, excluindo o processo raiz do
       Discord (ou o próprio Telão, se o Discord estiver fechado). Se a detecção falhar, não
       capturar: a ligação nunca pode vazar.

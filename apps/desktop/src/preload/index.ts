@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron'
-import { IPC, SavedCredentials, ScreenSource } from '../shared/ipc'
+import { IPC, SavedCredentials, ScreenAudioSupport, ScreenSource } from '../shared/ipc'
 
 // Only specific functions go here, never ipcRenderer itself (see skill electron-seguro).
 contextBridge.exposeInMainWorld('telao', {
@@ -10,7 +10,8 @@ contextBridge.exposeInMainWorld('telao', {
   listScreenSources: (): Promise<ScreenSource[]> => ipcRenderer.invoke(IPC.LIST_SCREEN_SOURCES),
   selectScreenSource: (id: string): Promise<void> =>
     ipcRenderer.invoke(IPC.SELECT_SCREEN_SOURCE, id),
-  isScreenAudioSupported: (): Promise<boolean> => ipcRenderer.invoke(IPC.IS_SCREEN_AUDIO_SUPPORTED),
+  getScreenAudioSupport: (): Promise<ScreenAudioSupport> =>
+    ipcRenderer.invoke(IPC.GET_SCREEN_AUDIO_SUPPORT),
   startScreenAudio: (): Promise<void> => ipcRenderer.invoke(IPC.START_SCREEN_AUDIO),
   stopScreenAudio: (): Promise<void> => ipcRenderer.invoke(IPC.STOP_SCREEN_AUDIO),
   onScreenAudioChunk: (listener: (chunk: Uint8Array) => void): (() => void) => {

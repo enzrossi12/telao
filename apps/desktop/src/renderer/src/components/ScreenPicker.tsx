@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ScreenSource } from '../../../shared/ipc'
+import { ScreenAudioSupport, ScreenSource } from '../../../shared/ipc'
 
 const TABS: { kind: ScreenSource['kind']; label: string }[] = [
   { kind: 'window', label: 'Aplicativos' },
@@ -14,12 +14,13 @@ interface ScreenPickerProps {
 function ScreenPicker({ onPick, onCancel }: ScreenPickerProps): React.JSX.Element {
   const [sources, setSources] = useState<ScreenSource[] | null>(null)
   const [activeKind, setActiveKind] = useState<ScreenSource['kind']>('window')
-  const [isAudioSupported, setIsAudioSupported] = useState(true)
+  const [audioSupport, setAudioSupport] = useState<ScreenAudioSupport>('full')
   const [withAudio, setWithAudio] = useState(false)
+  const isAudioSupported = audioSupport !== 'none'
 
   useEffect(() => {
     window.telao.listScreenSources().then(setSources)
-    window.telao.isScreenAudioSupported().then(setIsAudioSupported)
+    window.telao.getScreenAudioSupport().then(setAudioSupport)
   }, [])
 
   useEffect(() => {
@@ -94,8 +95,17 @@ function ScreenPicker({ onPick, onCancel }: ScreenPickerProps): React.JSX.Elemen
             />
             Compartilhar som (sem o Discord)
           </label>
-          {!isAudioSupported && (
-            <p>Compartilhar som exige Windows 11, para o som do Discord não ir junto.</p>
+          {audioSupport === 'experimental' && (
+            <p>
+              No Windows 10 isso é experimental: confirme com quem assiste se o Discord ficou de
+              fora.
+            </p>
+          )}
+          {audioSupport === 'none' && (
+            <p>
+              Compartilhar som exige Windows 10 versão 2004 ou mais novo, para o som do Discord não
+              ir junto.
+            </p>
           )}
         </footer>
       </section>
