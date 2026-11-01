@@ -162,12 +162,12 @@ funcionando, janela volta na mesma posição.
 > `loopback-capture` (versão fixa) no lugar do `audio: 'loopback'` do Electron. Esse recurso não
 > existe em Windows anterior ao build 20348, e nesse caso a opção de som fica bloqueada com aviso.
 
-- [ ] Checkbox "Compartilhar som" no seletor, bloqueado com aviso no Windows 10.
-- [ ] Capturar o som do sistema no main com `loopback-capture`, excluindo o processo raiz do
+- [x] Checkbox "Compartilhar som" no seletor, bloqueado com aviso no Windows 10.
+- [x] Capturar o som do sistema no main com `loopback-capture`, excluindo o processo raiz do
       Discord (ou o próprio Telão, se o Discord estiver fechado). Se a detecção falhar, não
       capturar: a ligação nunca pode vazar.
-- [ ] Publicar como `SCREEN_SHARE_AUDIO`; quem assiste ouve e tem slider de volume por stream.
-- [ ] **Risco de eco:** só um processo pode ser excluído, então o som dos streams recebidos no
+- [x] Publicar como `SCREEN_SHARE_AUDIO`; quem assiste ouve e tem slider de volume por stream.
+- [x] **Risco de eco:** só um processo pode ser excluído, então o som dos streams recebidos no
       próprio app entra na captura. Mitigação: silenciar os áudios recebidos enquanto a pessoa
       compartilha som e mostrar um aviso.
 
