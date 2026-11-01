@@ -138,16 +138,18 @@ Gerenciador de Tarefas, aba GPU, "Video Encode").
 ---
 
 ## Fase 5 — Acabamento de app desktop
-- [ ] Tema escuro inspirado no Discord, com cores e ícones próprios (ex.: Tabler/Lucide).
-- [ ] Ícone do app e nome "Telão" na barra de tarefas.
-- [ ] `requestSingleInstanceLock` (abrir de novo foca a janela existente). Em dev, permitir
+- [x] Tema escuro inspirado no Discord, com cores e ícones próprios (ex.: Tabler/Lucide).
+- [x] Ícone do app e nome "Telão" na barra de tarefas.
+- [x] `requestSingleInstanceLock` (abrir de novo foca a janela existente). Em dev, permitir
       várias instâncias via variável `TELAO_MULTI_INSTANCE=1` e pasta de dados separada via
       `TELAO_USER_DATA` (só quando `!app.isPackaged`; ver skill `testar-sala`).
       *Pode ser antecipado para a Fase 2, onde já é preciso abrir duas instâncias.*
-- [ ] Bandeja do sistema: fechar a janela minimiza para a bandeja; menu com "Abrir" e "Sair".
-- [ ] Lembrar tamanho e posição da janela.
-- [ ] Opção "Iniciar com o Windows" (desligada por padrão).
-- [ ] Atalho global opcional para iniciar/parar o compartilhamento (`globalShortcut`).
+- [x] Bandeja do sistema: fechar a janela minimiza para a bandeja; menu com "Abrir" e "Sair".
+- [x] Lembrar tamanho e posição da janela.
+- [x] Opção "Iniciar com o Windows" (desligada por padrão). *Só funciona na versão instalada;
+      conferir na Fase 7.*
+- ~~Atalho global opcional para iniciar/parar o compartilhamento (`globalShortcut`).~~
+  Removido a pedido do usuário: não funcionou no teste e não é necessário.
 
 **Aceite:** o app se comporta como um programa normal do Windows: uma instância só, bandeja
 funcionando, janela volta na mesma posição.
