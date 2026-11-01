@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { registerCredentialsIpc } from './ipc/credentials'
+import { registerScreenIpc } from './ipc/screen'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -60,6 +61,7 @@ if (!allowMultipleInstances && !app.requestSingleInstanceLock()) {
   app.whenReady().then(() => {
     app.setAppUserModelId('com.telao.app')
     registerCredentialsIpc()
+    registerScreenIpc()
     createWindow()
   })
 

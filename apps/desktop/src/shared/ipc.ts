@@ -1,10 +1,20 @@
 // IPC channel names, shared by main and preload. Each channel also declares its input/output types.
 export const IPC = {
   LOAD_CREDENTIALS: 'credentials:load',
-  SAVE_CREDENTIALS: 'credentials:save'
+  SAVE_CREDENTIALS: 'credentials:save',
+  LIST_SCREEN_SOURCES: 'screen:list-sources',
+  SELECT_SCREEN_SOURCE: 'screen:select-source'
 } as const
 
 export interface SavedCredentials {
   name: string
   password: string
+}
+
+export interface ScreenSource {
+  id: string
+  name: string
+  kind: 'window' | 'screen'
+  thumbnailDataUrl: string
+  iconDataUrl: string | null
 }
