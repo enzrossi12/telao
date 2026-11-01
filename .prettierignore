@@ -1,0 +1,8 @@
+node_modules
+dist
+out
+.vercel
+package-lock.json
+docs
+.claude
+CLAUDE.md
