@@ -45,7 +45,7 @@ function LoginScreen({
     <main className="login">
       <form className="login-card" onSubmit={handleSubmit}>
         <h1>Telão</h1>
-        <p className="login-subtitle">Entre para ver a tela dos seus amigos.</p>
+        <p className="login-subtitle">Compartilha a bosta dessa tela</p>
 
         <label>
           Nome
