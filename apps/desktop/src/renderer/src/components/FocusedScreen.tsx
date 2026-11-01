@@ -1,6 +1,8 @@
 import { ReactNode, useEffect, useRef } from 'react'
+import { EyeOff, Minimize2 } from 'lucide-react'
 import { VideoTrack } from 'livekit-client'
 import { RoomParticipant } from '../hooks/useRoom'
+import IconButton from './IconButton'
 import TrackVideo from './TrackVideo'
 
 interface FocusedScreenProps {
@@ -40,15 +42,15 @@ function FocusedScreen({
       <TrackVideo track={track} className="focused-video" />
       <span className="live-badge tile-badge">AO VIVO</span>
       <span className="tile-name">{isLocal ? 'Sua tela' : `Tela de ${name}`}</span>
-      <div className="focused-actions" onDoubleClick={(event) => event.stopPropagation()}>
+      <div className="stream-badge" onDoubleClick={(event) => event.stopPropagation()}>
         {volumeControl}
-        <button type="button" className="tile-action-inline" onClick={onExit}>
-          Sair do destaque
-        </button>
+        <IconButton label="Sair do destaque" icon={<Minimize2 size={16} />} onClick={onExit} />
         {!isLocal && (
-          <button type="button" className="tile-action-inline" onClick={onStopWatching}>
-            Parar de assistir
-          </button>
+          <IconButton
+            label="Parar de assistir"
+            icon={<EyeOff size={16} />}
+            onClick={onStopWatching}
+          />
         )}
       </div>
     </div>

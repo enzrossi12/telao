@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ScreenShare, ScreenShareOff } from 'lucide-react'
 import { UseScreenShare } from '../hooks/useScreenShare'
+import IconButton from './IconButton'
 import ScreenPicker from './ScreenPicker'
 
 interface ScreenShareControlProps {
@@ -32,16 +33,14 @@ function ScreenShareControl({
           A tela está sendo compartilhada, mas sem som.
         </p>
       )}
-      <button
-        type="button"
-        className={isSharing ? 'camera-button screen-button-on' : 'camera-button'}
-        aria-pressed={isSharing}
+      <IconButton
+        label={isSharing ? 'Parar de compartilhar' : 'Compartilhar tela'}
+        icon={isSharing ? <ScreenShareOff size={20} /> : <ScreenShare size={20} />}
+        className={isSharing ? 'icon-button-danger' : ''}
+        isPressed={isSharing}
         disabled={isBusy}
         onClick={() => (isSharing ? stopSharing() : setIsPickerOpen(true))}
-      >
-        {isSharing ? <ScreenShareOff size={18} /> : <ScreenShare size={18} />}
-        {isSharing ? 'Parar de compartilhar' : 'Compartilhar tela'}
-      </button>
+      />
       {isPickerOpen && <ScreenPicker onPick={handlePick} onCancel={() => setIsPickerOpen(false)} />}
     </div>
   )

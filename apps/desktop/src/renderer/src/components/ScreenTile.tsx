@@ -1,5 +1,7 @@
 import { ReactNode } from 'react'
+import { EyeOff } from 'lucide-react'
 import { RoomParticipant } from '../hooks/useRoom'
+import IconButton from './IconButton'
 import TrackVideo from './TrackVideo'
 
 interface ScreenTileProps {
@@ -39,11 +41,15 @@ function ScreenTile({
       )}
       <span className="live-badge tile-badge">AO VIVO</span>
       <span className="tile-name">{isLocal ? 'Sua tela' : `Tela de ${name}`}</span>
-      {volumeControl && <div className="tile-volume">{volumeControl}</div>}
       {isWatchingScreen && !isLocal && (
-        <button type="button" className="tile-action" onClick={onStopWatching}>
-          Parar de assistir
-        </button>
+        <div className="stream-badge">
+          {volumeControl}
+          <IconButton
+            label="Parar de assistir"
+            icon={<EyeOff size={16} />}
+            onClick={onStopWatching}
+          />
+        </div>
       )}
     </article>
   )

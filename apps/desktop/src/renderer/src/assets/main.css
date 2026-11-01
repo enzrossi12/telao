@@ -281,17 +281,42 @@ button {
   left: 8px;
 }
 
-.tile-action {
+.stream-badge {
   position: absolute;
   top: 8px;
   right: 8px;
-  padding: 4px 8px;
-  background: rgb(0 0 0 / 60%);
-  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border-radius: 999px;
+  padding: 2px 6px;
+  background: rgb(0 0 0 / 75%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms;
 }
 
-.tile-action:hover {
-  background: rgb(0 0 0 / 85%);
+.tile-screen:hover .stream-badge,
+.focused-screen:hover .stream-badge,
+.stream-badge:has(:focus-visible) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.stream-badge .icon-button {
+  padding: 5px;
+  border-radius: 50%;
+  background: none;
+}
+
+.stream-badge .icon-button:hover {
+  background: var(--bg-hover);
+  filter: none;
+}
+
+.stream-badge .icon-button-tooltip {
+  top: calc(100% + 8px);
+  bottom: auto;
 }
 
 .focus-layout {
@@ -323,32 +348,16 @@ button {
   object-fit: contain;
 }
 
-.focused-actions {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  display: flex;
-  gap: 8px;
-}
-
 .volume-slider {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border-radius: 6px;
-  padding: 3px 8px;
-  background: rgb(0 0 0 / 60%);
+  padding: 0 6px;
 }
 
 .volume-slider input {
   width: 80px;
   accent-color: var(--accent);
-}
-
-.tile-volume {
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
 }
 
 .sound-notice {
@@ -357,16 +366,6 @@ button {
   color: var(--text-muted);
   font-size: 13px;
   text-align: center;
-}
-
-.tile-action-inline {
-  padding: 4px 8px;
-  background: rgb(0 0 0 / 60%);
-  font-size: 12px;
-}
-
-.tile-action-inline:hover {
-  background: rgb(0 0 0 / 85%);
 }
 
 .tile-strip {
@@ -422,16 +421,58 @@ button {
 .toolbar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 12px;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 12px;
   background: var(--bg-sidebar);
 }
 
-.toolbar button {
+.icon-button {
+  position: relative;
   display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  flex-shrink: 0;
+  padding: 10px;
+  background: var(--bg-hover);
+}
+
+.icon-button:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+
+.icon-button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.icon-button-accent {
+  background: var(--accent);
+}
+
+.icon-button-danger {
+  background: var(--danger);
+}
+
+/* Aligned to the button's right edge so it never leaves the window. */
+.icon-button-tooltip {
+  position: absolute;
+  z-index: 6;
+  right: 0;
+  bottom: calc(100% + 8px);
+  border-radius: 6px;
+  padding: 5px 9px;
+  background: #000;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms;
+  white-space: nowrap;
+}
+
+.icon-button:hover .icon-button-tooltip,
+.icon-button:focus-visible .icon-button-tooltip {
+  opacity: 1;
 }
 
 .camera-control {
@@ -439,28 +480,6 @@ button {
   min-width: 0;
   align-items: center;
   gap: 8px;
-}
-
-.camera-button {
-  flex-shrink: 0;
-  background: var(--bg-hover);
-}
-
-.camera-button:hover:not(:disabled) {
-  filter: brightness(1.15);
-}
-
-.camera-button:disabled {
-  cursor: default;
-  opacity: 0.6;
-}
-
-.camera-button-on {
-  background: var(--accent);
-}
-
-.screen-button-on {
-  background: var(--danger);
 }
 
 .camera-control select {
@@ -641,12 +660,4 @@ button {
 .diagnostics dd {
   margin: 0;
   color: var(--text-muted);
-}
-
-.leave-button {
-  background: var(--danger);
-}
-
-.leave-button:hover {
-  filter: brightness(0.9);
 }

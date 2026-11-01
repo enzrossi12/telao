@@ -1,5 +1,6 @@
 import { Video, VideoOff } from 'lucide-react'
 import { useCamera } from '../hooks/useCamera'
+import IconButton from './IconButton'
 
 interface CameraControlProps {
   camera: ReturnType<typeof useCamera>
@@ -16,16 +17,14 @@ function CameraControl({ camera, isCameraOn }: CameraControlProps): React.JSX.El
           Não foi possível usar a câmera.
         </p>
       )}
-      <button
-        type="button"
-        className={isCameraOn ? 'camera-button camera-button-on' : 'camera-button'}
-        aria-pressed={isCameraOn}
+      <IconButton
+        label={isCameraOn ? 'Desligar câmera' : 'Ligar câmera'}
+        icon={isCameraOn ? <VideoOff size={20} /> : <Video size={20} />}
+        className={isCameraOn ? 'icon-button-accent' : ''}
+        isPressed={isCameraOn}
         disabled={isBusy}
         onClick={() => setCameraEnabled(!isCameraOn)}
-      >
-        {isCameraOn ? <VideoOff size={18} /> : <Video size={18} />}
-        {isCameraOn ? 'Desligar câmera' : 'Câmera'}
-      </button>
+      />
       {devices.length > 1 && (
         <select
           aria-label="Escolher câmera"

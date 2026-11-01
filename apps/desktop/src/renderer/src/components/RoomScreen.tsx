@@ -6,6 +6,7 @@ import { RoomParticipant } from '../hooks/useRoom'
 import { useScreenShare } from '../hooks/useScreenShare'
 import CameraControl from './CameraControl'
 import DiagnosticsOverlay from './DiagnosticsOverlay'
+import IconButton from './IconButton'
 import ParticipantList from './ParticipantList'
 import ScreenShareControl from './ScreenShareControl'
 import Stage from './Stage'
@@ -55,10 +56,12 @@ function RoomScreen({
             screenShare={screenShare}
             isSharing={localParticipant?.isLive ?? false}
           />
-          <button type="button" className="leave-button" onClick={onLeave}>
-            <LogOut size={18} />
-            Sair
-          </button>
+          <IconButton
+            label="Sair da sala"
+            icon={<LogOut size={20} />}
+            className="icon-button-danger"
+            onClick={onLeave}
+          />
         </footer>
       </main>
     </div>
