@@ -11,6 +11,8 @@ export interface RoomParticipant {
   isCameraOn: boolean
   cameraTrack: VideoTrack | null
   isLive: boolean
+  screenTrack: VideoTrack | null
+  isWatchingScreen: boolean
 }
 
 interface UseRoom {
@@ -33,18 +35,23 @@ const PARTICIPANT_EVENTS = [
   RoomEvent.TrackUnmuted,
   RoomEvent.TrackSubscribed,
   RoomEvent.TrackUnsubscribed,
+  RoomEvent.TrackSubscriptionStatusChanged,
   RoomEvent.LocalTrackPublished,
   RoomEvent.LocalTrackUnpublished
 ] as const
 
 function toRoomParticipant(participant: Participant, isLocal: boolean): RoomParticipant {
+  const screen = participant.getTrackPublication(Track.Source.ScreenShare)
   return {
     identity: participant.identity,
     name: participant.name || participant.identity,
     isLocal,
     isCameraOn: participant.isCameraEnabled,
     cameraTrack: participant.getTrackPublication(Track.Source.Camera)?.videoTrack ?? null,
-    isLive: participant.isScreenShareEnabled
+    isLive: participant.isScreenShareEnabled,
+    screenTrack: screen?.videoTrack ?? null,
+    // Our own screen is a local preview: it needs no subscription.
+    isWatchingScreen: isLocal ? Boolean(screen) : (screen?.isSubscribed ?? false)
   }
 }
 
