@@ -207,20 +207,116 @@ button {
   text-align: center;
 }
 
-.stage-empty {
-  display: flex;
+.camera-grid {
+  display: grid;
+  width: 100%;
+  min-height: 0;
+  /* Keeps 16:9 tiles inside the stage height: 92px = toolbar + grid padding. */
+  max-width: calc((100vh - 92px) * 16 / 9 * var(--columns) / var(--rows));
   flex: 1;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  align-content: center;
+  gap: 8px;
+  margin: 0 auto;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  aspect-ratio: 16 / 9;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  color: var(--text-muted);
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--bg-sidebar);
+}
+
+.tile-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tile-video-mirrored {
+  transform: scaleX(-1);
+}
+
+.tile-avatar {
+  display: flex;
+  width: 72px;
+  height: 72px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent);
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.tile-name {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  max-width: calc(100% - 16px);
+  overflow: hidden;
+  border-radius: 4px;
+  padding: 2px 6px;
+  background: rgb(0 0 0 / 60%);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .toolbar {
   display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 12px;
   padding: 12px;
   background: var(--bg-sidebar);
+}
+
+.camera-control {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.camera-button {
+  flex-shrink: 0;
+  background: var(--bg-hover);
+}
+
+.camera-button:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+
+.camera-button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.camera-button-on {
+  background: var(--accent);
+}
+
+.camera-control select {
+  min-width: 0;
+  max-width: 220px;
+  border: 0;
+  border-radius: 6px;
+  padding: 10px 8px;
+  background: var(--bg-input);
+  color: var(--text);
+  font: inherit;
+}
+
+.camera-error {
+  color: var(--danger);
+  font-size: 13px;
 }
 
 .leave-button {

@@ -5,7 +5,7 @@ import RoomScreen from './components/RoomScreen'
 import { useRoom } from './hooks/useRoom'
 
 function App(): React.JSX.Element | null {
-  const { status, participants, error, join, leave } = useRoom()
+  const { room, status, participants, error, join, leave } = useRoom()
   const [credentials, setCredentials] = useState<SavedCredentials | null>(null)
 
   useEffect(() => {
@@ -22,6 +22,7 @@ function App(): React.JSX.Element | null {
   if (status === 'connected' || status === 'reconnecting') {
     return (
       <RoomScreen
+        room={room}
         participants={participants}
         isReconnecting={status === 'reconnecting'}
         onLeave={leave}
