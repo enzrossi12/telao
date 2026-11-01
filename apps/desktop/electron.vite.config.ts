@@ -3,16 +3,18 @@ import { defineConfig } from 'electron-vite'
 import react from '@vitejs/plugin-react'
 import type { Plugin } from 'vite'
 
-// Writes VITE_TOKEN_URL into the CSP of index.html. An unset variable leaves it out of the policy.
-function cspTokenUrl(): Plugin {
-  let tokenUrl = ''
+// Writes the service's /api/ folder into the CSP of index.html, taken from VITE_TOKEN_URL. An unset
+// variable leaves it out of the policy.
+function cspTokenApi(): Plugin {
+  let tokenApi = ''
   return {
-    name: 'telao:csp-token-url',
+    name: 'telao:csp-token-api',
     configResolved(config) {
-      tokenUrl = config.env.VITE_TOKEN_URL ?? ''
+      const { VITE_TOKEN_URL } = config.env
+      tokenApi = VITE_TOKEN_URL ? new URL('/api/', VITE_TOKEN_URL).href : ''
     },
     transformIndexHtml(html) {
-      return html.replace('__VITE_TOKEN_URL__', tokenUrl)
+      return html.replace('__VITE_TOKEN_API__', tokenApi)
     }
   }
 }
@@ -26,6 +28,6 @@ export default defineConfig({
         '@renderer': resolve('src/renderer/src')
       }
     },
-    plugins: [react(), cspTokenUrl()]
+    plugins: [react(), cspTokenApi()]
   }
 })

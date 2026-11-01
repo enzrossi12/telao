@@ -1,30 +1,23 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { SavedCredentials } from '../../../shared/ipc'
-import { JoinError } from '../lib/token'
-
-const ERROR_MESSAGES: Record<JoinError, string> = {
-  wrong_password: 'Senha do grupo incorreta.',
-  invalid_name: 'O nome precisa ter de 2 a 24 caracteres.',
-  offline: 'Sem conexão com a internet.',
-  server: 'Servidor fora do ar. Tente de novo em instantes.',
-  connection_lost: 'A conexão com a sala foi perdida.'
-}
+import { JOIN_ERROR_MESSAGES, JoinError } from '../lib/token'
 
 interface LoginScreenProps {
-  initial: SavedCredentials
-  isConnecting: boolean
+  initialName: string
+  initialPassword: string
+  isBusy: boolean
   error: JoinError | null
-  onSubmit: (credentials: SavedCredentials) => void
+  onSubmit: (name: string, password: string) => void
 }
 
 function LoginScreen({
-  initial,
-  isConnecting,
+  initialName,
+  initialPassword,
+  isBusy,
   error,
   onSubmit
 }: LoginScreenProps): React.JSX.Element {
-  const [name, setName] = useState(initial.name)
-  const [password, setPassword] = useState(initial.password)
+  const [name, setName] = useState(initialName)
+  const [password, setPassword] = useState(initialPassword)
   const [nameTooShort, setNameTooShort] = useState(false)
   const [version, setVersion] = useState<string | null>(null)
 
@@ -36,10 +29,12 @@ function LoginScreen({
     event.preventDefault()
     const trimmedName = name.trim()
     setNameTooShort(trimmedName.length < 2)
-    if (trimmedName.length >= 2) onSubmit({ name: trimmedName, password })
+    if (trimmedName.length >= 2) onSubmit(trimmedName, password)
   }
 
-  const message = nameTooShort ? ERROR_MESSAGES.invalid_name : error && ERROR_MESSAGES[error]
+  const message = nameTooShort
+    ? JOIN_ERROR_MESSAGES.invalid_name
+    : error && JOIN_ERROR_MESSAGES[error]
 
   return (
     <main className="login">
@@ -74,8 +69,8 @@ function LoginScreen({
           </p>
         )}
 
-        <button type="submit" disabled={isConnecting}>
-          {isConnecting ? 'Entrando…' : 'Entrar'}
+        <button type="submit" disabled={isBusy}>
+          {isBusy ? 'Verificando…' : 'Continuar'}
         </button>
 
         {version && <p className="login-version">Versão {version}</p>}

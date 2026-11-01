@@ -2,12 +2,16 @@ import { Video } from 'lucide-react'
 import { RoomParticipant } from '../hooks/useRoom'
 
 interface ParticipantListProps {
+  roomName: string
   participants: RoomParticipant[]
 }
 
-function ParticipantList({ participants }: ParticipantListProps): React.JSX.Element {
+function ParticipantList({ roomName, participants }: ParticipantListProps): React.JSX.Element {
   return (
     <aside className="sidebar">
+      <p className="sidebar-room" title={roomName}>
+        {roomName}
+      </p>
       <h2>Na sala — {participants.length}</h2>
       <ul>
         {participants.map((participant) => (

@@ -8,7 +8,7 @@ import {
   Track,
   VideoTrack
 } from 'livekit-client'
-import { fetchToken, JoinError, TokenError } from '../lib/token'
+import { createRoom, fetchToken, JoinError, JoinRequest, TokenError } from '../lib/token'
 
 export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected' | 'reconnecting'
 
@@ -26,10 +26,12 @@ export interface RoomParticipant {
 
 interface UseRoom {
   room: Room | null
+  roomName: string | null
   status: ConnectionStatus
   participants: RoomParticipant[]
   error: JoinError | null
-  join: (name: string, password: string) => Promise<boolean>
+  clearError: () => void
+  join: (request: JoinRequest, create: boolean) => Promise<string | null>
   leave: () => Promise<void>
 }
 
@@ -80,62 +82,74 @@ export function useRoom(): UseRoom {
   const [participants, setParticipants] = useState<RoomParticipant[]>([])
   const [error, setError] = useState<JoinError | null>(null)
 
-  const join = useCallback(async (name: string, password: string): Promise<boolean> => {
-    setError(null)
-    setStatus('connecting')
+  const [roomName, setRoomName] = useState<string | null>(null)
 
-    let token: string
-    try {
-      token = await fetchToken(name, password)
-    } catch (err) {
-      setError(err instanceof TokenError ? err.reason : 'server')
-      setStatus('disconnected')
-      return false
-    }
+  const clearError = useCallback((): void => setError(null), [])
 
-    const room = new Room({
-      adaptiveStream: true,
-      dynacast: true,
-      publishDefaults: { videoCodec: 'h264', simulcast: true }
-    })
-    const refresh = (): void => setParticipants(listParticipants(room))
+  const join = useCallback(
+    async (request: JoinRequest, create: boolean): Promise<string | null> => {
+      setError(null)
+      setStatus('connecting')
 
-    PARTICIPANT_EVENTS.forEach((event) => room.on(event, refresh))
-    room.on(RoomEvent.Reconnecting, () => setStatus('reconnecting'))
-    room.on(RoomEvent.Reconnected, () => {
-      setStatus('connected')
+      let session: Awaited<ReturnType<typeof fetchToken>>
+      try {
+        if (create) await createRoom(request.password, request.roomName, request.roomPassword)
+        session = await fetchToken(request)
+      } catch (err) {
+        setError(err instanceof TokenError ? err.reason : 'server')
+        setStatus('disconnected')
+        return null
+      }
+
+      const room = new Room({
+        adaptiveStream: true,
+        dynacast: true,
+        publishDefaults: { videoCodec: 'h264', simulcast: true }
+      })
+      const refresh = (): void => setParticipants(listParticipants(room))
+
+      PARTICIPANT_EVENTS.forEach((event) => room.on(event, refresh))
+      room.on(RoomEvent.Reconnecting, () => setStatus('reconnecting'))
+      room.on(RoomEvent.Reconnected, () => {
+        setStatus('connected')
+        refresh()
+      })
+      room.on(RoomEvent.Disconnected, (reason) => {
+        // A failed connect() also lands here; the catch below reports that one.
+        if (roomRef.current !== room) return
+        roomRef.current = null
+        setActiveRoom(null)
+        setRoomName(null)
+        setParticipants([])
+        setStatus('disconnected')
+        if (reason !== DisconnectReason.CLIENT_INITIATED) setError('connection_lost')
+      })
+
+      try {
+        await room.connect(import.meta.env.VITE_LIVEKIT_URL, session.token, {
+          autoSubscribe: false
+        })
+      } catch (err) {
+        console.error('LiveKit connection failed', err)
+        await room.disconnect()
+        setError(navigator.onLine ? 'server' : 'offline')
+        setStatus('disconnected')
+        return null
+      }
+
+      roomRef.current = room
+      setActiveRoom(room)
+      setRoomName(session.roomName)
       refresh()
-    })
-    room.on(RoomEvent.Disconnected, (reason) => {
-      // A failed connect() also lands here; the catch below reports that one.
-      if (roomRef.current !== room) return
-      roomRef.current = null
-      setActiveRoom(null)
-      setParticipants([])
-      setStatus('disconnected')
-      if (reason !== DisconnectReason.CLIENT_INITIATED) setError('connection_lost')
-    })
-
-    try {
-      await room.connect(import.meta.env.VITE_LIVEKIT_URL, token, { autoSubscribe: false })
-    } catch (err) {
-      console.error('LiveKit connection failed', err)
-      await room.disconnect()
-      setError(navigator.onLine ? 'server' : 'offline')
-      setStatus('disconnected')
-      return false
-    }
-
-    roomRef.current = room
-    setActiveRoom(room)
-    refresh()
-    setStatus('connected')
-    return true
-  }, [])
+      setStatus('connected')
+      return session.roomName
+    },
+    []
+  )
 
   const leave = useCallback(async (): Promise<void> => {
     await roomRef.current?.disconnect()
   }, [])
 
-  return { room: activeRoom, status, participants, error, join, leave }
+  return { room: activeRoom, roomName, status, participants, error, clearError, join, leave }
 }

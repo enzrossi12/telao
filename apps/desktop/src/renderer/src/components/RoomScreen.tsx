@@ -13,6 +13,7 @@ import Stage from './Stage'
 
 interface RoomScreenProps {
   room: Room | null
+  roomName: string
   participants: RoomParticipant[]
   isReconnecting: boolean
   onLeave: () => void
@@ -20,6 +21,7 @@ interface RoomScreenProps {
 
 function RoomScreen({
   room,
+  roomName,
   participants,
   isReconnecting,
   onLeave
@@ -41,7 +43,7 @@ function RoomScreen({
 
   return (
     <div className="room">
-      <ParticipantList participants={participants} />
+      <ParticipantList roomName={roomName} participants={participants} />
       <main className="stage">
         {isReconnecting && (
           <p className="connection-banner" role="status">
