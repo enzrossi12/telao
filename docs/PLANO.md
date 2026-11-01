@@ -83,15 +83,15 @@ microfone.
 ---
 
 ## Fase 2 — Entrar na sala e presença
-- [ ] Tela de entrada: campo nome, campo senha do grupo, botão "Entrar". Mensagens de erro
+- [x] Tela de entrada: campo nome, campo senha do grupo, botão "Entrar". Mensagens de erro
       em português (senha errada, sem internet, servidor fora).
-- [ ] Hook `useRoom`: busca token, cria `Room` com `adaptiveStream: true`, `dynacast: true`,
+- [x] Hook `useRoom`: busca token, cria `Room` com `adaptiveStream: true`, `dynacast: true`,
       `autoSubscribe: false` (assinatura é controlada pelo app — ver Fase 4) e conecta.
-- [ ] Lista de participantes na barra lateral (estilo Discord): nome, ícone de câmera ligada,
+- [x] Lista de participantes na barra lateral (estilo Discord): nome, ícone de câmera ligada,
       selo "AO VIVO" quando compartilha tela.
-- [ ] Tratar `Reconnecting`/`Reconnected`/`Disconnected` com aviso na interface.
-- [ ] Botão "Sair" que desconecta e volta à tela de entrada.
-- [ ] Lembrar nome e senha (senha cifrada com `safeStorage` do Electron, via IPC).
+- [x] Tratar `Reconnecting`/`Reconnected`/`Disconnected` com aviso na interface.
+- [x] Botão "Sair" que desconecta e volta à tela de entrada.
+- [x] Lembrar nome e senha (senha cifrada com `safeStorage` do Electron, via IPC).
 
 **Aceite:** duas instâncias do app (ver skill `testar-sala`) entram na sala e cada uma vê a
 outra na lista; derrubar a rede mostra "Reconectando…" e volta sozinho.
