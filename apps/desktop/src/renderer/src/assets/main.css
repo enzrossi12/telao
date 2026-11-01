@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   --bg: #1e1f24;
   --bg-sidebar: #17181c;
   --bg-input: #121317;
@@ -193,6 +194,7 @@ button {
 }
 
 .stage {
+  position: relative;
   display: flex;
   min-width: 0;
   flex: 1;
@@ -207,7 +209,7 @@ button {
   text-align: center;
 }
 
-.camera-grid {
+.tile-grid {
   display: grid;
   width: 100%;
   min-height: 0;
@@ -241,6 +243,126 @@ button {
 
 .tile-video-mirrored {
   transform: scaleX(-1);
+}
+
+.tile-video-screen {
+  display: block;
+  object-fit: contain;
+}
+
+.tile-screen {
+  background: #000;
+}
+
+.tile-focus-button {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  padding: 0;
+  background: none;
+}
+
+.watch-button {
+  background: var(--accent);
+}
+
+.watch-button:hover {
+  background: var(--accent-hover);
+}
+
+.tile-status {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.tile-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+.tile-action {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  background: rgb(0 0 0 / 60%);
+  font-size: 12px;
+}
+
+.tile-action:hover {
+  background: rgb(0 0 0 / 85%);
+}
+
+.focus-layout {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+
+.focused-screen {
+  position: relative;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000;
+}
+
+.focused-screen:fullscreen {
+  border-radius: 0;
+}
+
+.focused-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.focused-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.tile-action-inline {
+  padding: 4px 8px;
+  background: rgb(0 0 0 / 60%);
+  font-size: 12px;
+}
+
+.tile-action-inline:hover {
+  background: rgb(0 0 0 / 85%);
+}
+
+.tile-strip {
+  display: flex;
+  height: 110px;
+  flex-shrink: 0;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.tile-strip .tile {
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.tile-strip .tile-avatar {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+}
+
+.tile-strip .watch-button {
+  padding: 4px 10px;
+  font-size: 13px;
 }
 
 .tile-avatar {
@@ -303,6 +425,10 @@ button {
   background: var(--accent);
 }
 
+.screen-button-on {
+  background: var(--danger);
+}
+
 .camera-control select {
   min-width: 0;
   max-width: 220px;
@@ -317,6 +443,152 @@ button {
 .camera-error {
   color: var(--danger);
   font-size: 13px;
+}
+
+.modal-backdrop {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgb(0 0 0 / 70%);
+}
+
+.screen-picker {
+  display: flex;
+  width: 100%;
+  max-width: 760px;
+  max-height: 100%;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 10px;
+  padding: 20px;
+  background: var(--bg);
+}
+
+.screen-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.screen-picker-header h2 {
+  font-size: 20px;
+}
+
+.modal-close {
+  padding: 2px 10px;
+  background: none;
+  font-size: 22px;
+}
+
+.modal-close:hover {
+  background: var(--bg-hover);
+}
+
+.screen-picker-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.picker-tab {
+  padding: 6px 14px;
+  background: none;
+  color: var(--text-muted);
+}
+
+.picker-tab:hover {
+  background: var(--bg-hover);
+}
+
+.picker-tab-active {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.screen-picker-message {
+  padding: 32px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.screen-picker-grid {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.screen-source {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  background: var(--bg-sidebar);
+  font-weight: 400;
+  text-align: left;
+}
+
+.screen-source:hover {
+  background: var(--bg-hover);
+}
+
+.screen-source > img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: #000;
+}
+
+.screen-source-name {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.screen-source-name img {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.screen-source-name span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.diagnostics {
+  position: absolute;
+  z-index: 5;
+  top: 12px;
+  left: 12px;
+  max-width: calc(100% - 24px);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgb(0 0 0 / 80%);
+  font-family: Consolas, monospace;
+  font-size: 12px;
+}
+
+.diagnostics h2 {
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.diagnostics dl {
+  margin: 4px 0 0;
+}
+
+.diagnostics dd {
+  margin: 0;
+  color: var(--text-muted);
 }
 
 .leave-button {

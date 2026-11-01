@@ -1,23 +1,20 @@
-import { CSSProperties } from 'react'
-import { RoomParticipant } from '../hooks/useRoom'
-import ParticipantTile from './ParticipantTile'
+import { Children, CSSProperties, ReactNode } from 'react'
 
-interface CameraGridProps {
-  participants: RoomParticipant[]
+interface TileGridProps {
+  children: ReactNode
 }
 
-function CameraGrid({ participants }: CameraGridProps): React.JSX.Element {
-  const columns = Math.ceil(Math.sqrt(participants.length))
-  const rows = Math.ceil(participants.length / columns)
+function TileGrid({ children }: TileGridProps): React.JSX.Element {
+  const count = Children.count(children)
+  const columns = Math.ceil(Math.sqrt(count))
+  const rows = Math.ceil(count / columns)
   const layout = { '--columns': columns, '--rows': rows } as CSSProperties
 
   return (
-    <section className="camera-grid" style={layout}>
-      {participants.map((participant) => (
-        <ParticipantTile key={participant.identity} participant={participant} />
-      ))}
+    <section className="tile-grid" style={layout}>
+      {children}
     </section>
   )
 }
 
-export default CameraGrid
+export default TileGrid

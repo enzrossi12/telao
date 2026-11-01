@@ -1,34 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { VideoTrack } from 'livekit-client'
 import { RoomParticipant } from '../hooks/useRoom'
-
-interface CameraVideoProps {
-  track: VideoTrack
-  isMirrored: boolean
-}
-
-function CameraVideo({ track, isMirrored }: CameraVideoProps): React.JSX.Element {
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-    track.attach(video)
-    return () => {
-      track.detach(video)
-    }
-  }, [track])
-
-  return (
-    <video
-      ref={videoRef}
-      className={isMirrored ? 'tile-video tile-video-mirrored' : 'tile-video'}
-      autoPlay
-      muted
-      playsInline
-    />
-  )
-}
+import TrackVideo from './TrackVideo'
 
 interface ParticipantTileProps {
   participant: RoomParticipant
@@ -40,7 +11,10 @@ function ParticipantTile({ participant }: ParticipantTileProps): React.JSX.Eleme
   return (
     <article className="tile">
       {isCameraOn && cameraTrack ? (
-        <CameraVideo track={cameraTrack} isMirrored={isLocal} />
+        <TrackVideo
+          track={cameraTrack}
+          className={isLocal ? 'tile-video tile-video-mirrored' : 'tile-video'}
+        />
       ) : (
         <span className="tile-avatar" aria-hidden="true">
           {name.charAt(0).toUpperCase()}
