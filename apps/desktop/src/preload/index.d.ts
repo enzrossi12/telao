@@ -1,7 +1,10 @@
+import { SavedCredentials } from '../shared/ipc'
+
 declare global {
   interface Window {
     telao: {
-      electronVersion: string
+      loadCredentials: () => Promise<SavedCredentials>
+      saveCredentials: (credentials: SavedCredentials) => Promise<void>
     }
   }
 }
