@@ -185,12 +185,12 @@ ligação do Discord.
 > voltou quando ele ficou público. Versões até a 0.1.3 não têm o atualizador: quem as usa precisa
 > instalar uma versão mais nova manualmente uma vez.
 
-- [ ] `electron-builder` com alvo NSIS x64: atalho na área de trabalho e no menu Iniciar,
+- [x] `electron-builder` com alvo NSIS x64: atalho na área de trabalho e no menu Iniciar,
       instalação por usuário (sem pedir administrador).
-- [ ] `electron-updater` publicando no GitHub Releases do repositório; verificar atualização ao
+- [x] `electron-updater` publicando no GitHub Releases do repositório; verificar atualização ao
       abrir e a cada 6 horas; aviso "Nova versão disponível — reiniciar".
-- [ ] Versão exibida na tela de entrada.
-- [ ] Documentar o processo na skill `release-windows`.
+- [x] Versão exibida na tela de entrada.
+- [x] Documentar o processo na skill `release-windows`.
 
 **Aceite:** instalar a v0.1.4 numa máquina sem pedir administrador, entrar na sala, compartilhar
 tela com som e câmera; "Iniciar com o Windows" funciona; publicar a v0.1.5 e o app atualizar
@@ -205,6 +205,9 @@ sozinho, mantendo o login salvo.
       `docs/RESULTADOS.md`.
 - [ ] Ajustar bitrate máximo da tela se alguém tiver upload fraco (ex.: limitar a 1,5 Mbps).
 - [ ] Conferir consumo do plano gratuito no painel do LiveKit Cloud.
+- [ ] Windows 10: conferir que o amigo ouve o stream (ver linha "(som)" em `Ctrl+Shift+D`) e que
+      o Discord fica de fora quando ele compartilha com som. Se vazar, voltar a bloquear.
+- [ ] Conferir "Iniciar com o Windows" na versão instalada.
 - [ ] Sessão real com os amigos; anotar problemas em `docs/FEEDBACK.md` e corrigir.
 
 **Aceite:** sessão de 1 hora com o grupo sem quedas e sem travamentos perceptíveis.
