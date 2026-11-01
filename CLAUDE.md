@@ -51,6 +51,7 @@ câmera/tela e assina os streams dos outros.
 - Lógica do LiveKit isolada em hooks (`useRoom`, `useScreenShare`, `useCamera`…), não
   espalhada nos componentes.
 - Commits pequenos, um por item do plano (Conventional Commits: `feat:`, `fix:`, `chore:`).
+- Sem atribuição a ferramentas: nunca usar `Co-Authored-By` ou citar o Claude em commits e PRs.
 - Ao concluir um item do plano, marque o checkbox em `docs/PLANO.md`.
 
 ## Comandos (após a Fase 0)
