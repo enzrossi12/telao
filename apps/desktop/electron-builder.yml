@@ -5,8 +5,11 @@ files:
   - '!electron.vite.config.{js,ts,mjs,cjs}'
   - '!{.env,.env.*,.npmrc}'
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+asarUnpack:
+  - resources/**
 win:
   executableName: telao
+  icon: build/icon.ico
 nsis:
   artifactName: telao-${version}-setup.${ext}
   shortcutName: ${productName}
