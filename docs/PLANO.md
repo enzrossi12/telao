@@ -205,14 +205,14 @@ sozinho, mantendo o login salvo.
 > **Decisão do usuário:** fase adicionada depois do plano original, no modelo do Radmin. As salas
 > ficam num Upstash Redis gratuito, acessado por REST, sem dependência nova.
 
-- [ ] Depois da senha do grupo, escolher "Criar sala" ou "Entrar em uma sala".
-- [ ] Criar sala com nome (2–32 caracteres, sem diferenciar maiúsculas) e senha (4–64), guardada
+- [x] Depois da senha do grupo, escolher "Criar sala" ou "Entrar em uma sala".
+- [x] Criar sala com nome (2–32 caracteres, sem diferenciar maiúsculas) e senha (4–64), guardada
       como hash `scrypt`.
-- [ ] Sala expira depois de 7 dias sem ninguém entrar; cada entrada renova o prazo.
-- [ ] Cada sala é uma sala separada no LiveKit, com `roomId` aleatório.
-- [ ] Lembrar a última sala, com a senha cifrada por `safeStorage`.
-- [ ] Sair da sala volta à escolha de sala.
-- [ ] `POST /api/token` sem sala continua na sala fixa, para versões até a 0.1.5.
+- [x] Sala expira depois de 7 dias sem ninguém entrar; cada entrada renova o prazo.
+- [x] Cada sala é uma sala separada no LiveKit, com `roomId` aleatório.
+- [x] Lembrar a última sala, com a senha cifrada por `safeStorage`.
+- [x] Sair da sala volta à escolha de sala.
+- [x] `POST /api/token` sem sala continua na sala fixa, para versões até a 0.1.5.
 
 **Aceite:** duas pessoas criam e entram numa sala em produção; senha errada e sala inexistente
 mostram erro; duas salas ao mesmo tempo não se misturam; sair e voltar traz os dados preenchidos.
