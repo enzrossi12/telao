@@ -28,7 +28,8 @@ token → publica câmera/tela e assina os streams dos outros.
 - Som da tela: `loopback-capture` no main (módulo nativo aprovado pelo usuário, versão fixa).
 - Ícones: `lucide-react`.
 - Token: `livekit-server-sdk` numa função da Vercel (`apps/token/api/token.ts`).
-- Empacotamento: `electron-builder` (instalador NSIS) + `electron-updater` (GitHub Releases).
+- Empacotamento: `electron-builder` (instalador NSIS). Sem atualização automática: o instalador
+  é enviado aos amigos manualmente.
 - Estilo: CSS Modules ou CSS simples. Sem framework de UI pesado.
 
 ## Regras invioláveis
@@ -67,4 +68,4 @@ npx vercel dev --cwd apps/token     # roda a função de token localmente
 - `electron-seguro` — regras de segurança e como criar um canal IPC novo.
 - `testar-sala` — como simular vários amigos na sala para testar.
 - `fechar-fase` — checklist para concluir uma fase do plano (`/fechar-fase N`).
-- `release-windows` — gerar e publicar uma versão nova (`/release-windows`).
+- `release-windows` — gerar o instalador de uma versão nova (`/release-windows`).

@@ -22,7 +22,7 @@ compartilharem a tela (720p/30fps) ou ligarem a câmera. Sem voz.
 | Câmera | 720p, 30 fps, simulcast ligado |
 | Áudio | Sem microfone. Áudio da tela opcional (Fase 6) |
 | Assistir tela | **Sob demanda, igual ao Discord**: a pessoa clica em "Assistir" para receber o stream. Câmeras são recebidas automaticamente |
-| Distribuição | Instalador NSIS + atualização automática via GitHub Releases |
+| Distribuição | Instalador NSIS enviado aos amigos manualmente; sem atualização automática (o repositório é privado) |
 | Assinatura de código | Não (o SmartScreen mostrará aviso; aceitável para amigos) |
 
 ### Estimativa de banda (por pessoa)
@@ -176,15 +176,22 @@ ligação do Discord.
 
 ---
 
-## Fase 7 — Instalador e atualização automática
+## Fase 7 — Instalador
+
+> **Decisão do usuário:** sem atualização automática. O repositório continua privado, e cada
+> versão nova é um instalador enviado aos amigos, que instalam por cima da anterior.
+
 - [ ] `electron-builder` com alvo NSIS x64: atalho na área de trabalho e no menu Iniciar,
       instalação por usuário (sem pedir administrador).
-- [ ] `electron-updater` publicando no GitHub Releases do repositório; verificar atualização ao
-      abrir e a cada 6 horas; aviso "Nova versão disponível — reiniciar".
+- ~~`electron-updater` publicando no GitHub Releases do repositório; verificar atualização ao
+  abrir e a cada 6 horas; aviso "Nova versão disponível — reiniciar".~~ Removido a pedido do
+  usuário.
 - [ ] Versão exibida na tela de entrada.
 - [ ] Documentar o processo na skill `release-windows`.
 
-**Aceite:** instalar a v0.1.0 numa máquina, publicar a v0.1.1 e o app atualizar sozinho.
+**Aceite:** instalar a v0.1.0 numa máquina sem pedir administrador, entrar na sala, compartilhar
+tela com som e câmera; "Iniciar com o Windows" funciona; instalar de novo por cima mantém o
+login salvo.
 
 ---
 

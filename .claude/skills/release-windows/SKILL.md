@@ -1,15 +1,17 @@
 ---
 name: release-windows
-description: Gera e publica uma nova versão do instalador Windows no GitHub Releases para a atualização automática. Use apenas quando o usuário pedir explicitamente com /release-windows.
+description: Gera o instalador Windows de uma versão nova para enviar aos amigos. Use apenas quando o usuário pedir explicitamente com /release-windows.
 disable-model-invocation: true
 ---
 
-# Publicar nova versão ($ARGUMENTS = patch | minor | major, padrão patch)
+# Gerar nova versão ($ARGUMENTS = patch | minor | major, padrão patch)
+
+O Telão não tem atualização automática: cada versão é um instalador que o usuário envia aos
+amigos, que instalam por cima da versão anterior. O login salvo é mantido.
 
 Pré-requisitos (confirmar antes de começar):
 - Working tree limpa (`git status`) e na branch `main`.
-- Variável `GH_TOKEN` definida no terminal (token do GitHub com permissão de releases).
-- `apps/desktop/electron-builder.yml` com `publish: github` apontando para o repositório.
+- `apps/desktop/.env` preenchido: as URLs entram no instalador durante o build.
 
 Passos:
 1. `npm run typecheck` e `npm run lint` precisam passar.
@@ -17,10 +19,12 @@ Passos:
 3. Escrever as novidades em `apps/desktop/CHANGELOG.md` (em português, linguagem simples —
    é o que os amigos vão ler).
 4. Commit `chore(release): vX.Y.Z` e tag `vX.Y.Z`; `git push --follow-tags`.
-5. Build e publicação: `npm run build:win -w apps/desktop -- --publish always`.
-6. Conferir no GitHub Releases: o `.exe`, o `.blockmap` e o `latest.yml` precisam estar lá
-   (sem o `latest.yml` a atualização automática não funciona).
-7. Avisar o usuário: versão publicada, link do release e que os apps instalados vão
-   atualizar na próxima abertura.
+5. Gerar o instalador: `npm run build:win -w apps/desktop`.
+6. Conferir que `apps/desktop/dist/telao-X.Y.Z-setup.exe` existe e abre o app.
+7. Avisar o usuário: versão gerada, caminho do `.exe` e o que mudou, pronto para mandar no grupo.
 
-Nunca publicar se algum passo falhar; pare e explique o erro.
+Nunca gerar a versão se algum passo falhar; pare e explique o erro.
+
+O instalador não é assinado, então o SmartScreen mostra um aviso: em "Mais informações" e
+"Executar assim mesmo" a instalação segue. Ele traz as URLs do LiveKit e do token, mas nenhum
+segredo: `LIVEKIT_API_SECRET` e a senha do grupo nunca entram no app.
