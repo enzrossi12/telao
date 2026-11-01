@@ -45,15 +45,18 @@ renderer ── telao.listScreenSources() ──▶ main: desktopCapturer.getSou
                                             fetchWindowIcons: true })
          ◀── [{id, name, thumbnailDataUrl, iconDataUrl, kind}] ──
 
-renderer (usuário escolhe) ── telao.selectScreenSource({id, withAudio}) ──▶ main guarda em memória
+renderer (usuário escolhe) ── telao.selectScreenSource(id) ──▶ main guarda em memória
 
 renderer ── room.localParticipant.setScreenShareEnabled(true, …)
          → Chromium chama getDisplayMedia
          → main: session.defaultSession.setDisplayMediaRequestHandler((req, callback) => {
               pega a fonte guardada; se não houver, nega;
-              callback({ video: source, audio: withAudio ? 'loopback' : undefined });
+              callback({ video: source });
               limpa a escolha guardada })
 ```
+- O som da tela **não** passa por esse handler: o loopback do Electron levaria o Discord junto.
+  Ele é capturado no main com `loopback-capture` (`src/main/ipc/screenAudio.ts`), excluindo o
+  processo do Discord, e chega ao renderer como PCM pelo canal `SCREEN_AUDIO_CHUNK`.
 - Converter miniaturas com `thumbnail.toDataURL()` no main antes de enviar.
 - Se a fonte escolhida não existir mais (janela fechada), negar e avisar o usuário.
 

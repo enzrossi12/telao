@@ -25,6 +25,8 @@ token → publica câmera/tela e assina os streams dos outros.
 - Monorepo com **npm workspaces** (não usar pnpm/yarn).
 - Desktop: Electron (última estável), electron-vite, React, TypeScript `strict`.
 - Mídia: `livekit-client` no renderer.
+- Som da tela: `loopback-capture` no main (módulo nativo aprovado pelo usuário, versão fixa).
+- Ícones: `lucide-react`.
 - Token: `livekit-server-sdk` numa função da Vercel (`apps/token/api/token.ts`).
 - Empacotamento: `electron-builder` (instalador NSIS) + `electron-updater` (GitHub Releases).
 - Estilo: CSS Modules ou CSS simples. Sem framework de UI pesado.

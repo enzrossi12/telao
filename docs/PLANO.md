@@ -157,17 +157,22 @@ funcionando, janela volta na mesma posição.
 ---
 
 ## Fase 6 — Áudio da tela (opcional, igual ao "compartilhar com som" do Discord)
-- [ ] Checkbox "Compartilhar som" no seletor.
-- [ ] No handler de display media, usar `audio: 'loopback'` (captura o som do sistema no Windows).
-- [ ] Publicar como `SCREEN_SHARE_AUDIO`; quem assiste ouve e tem slider de volume por stream.
-- [ ] **Risco a verificar:** o loopback captura *todo* o som do PC, inclusive o áudio de outros
-      streams que a pessoa está assistindo no próprio app (eco/realimentação). Testar e, se
-      ocorrer, aplicar mitigação: silenciar os áudios recebidos enquanto a pessoa compartilha
-      som e mostrar um aviso. A solução definitiva (captura de áudio por processo, como o
-      Discord faz com WASAPI process loopback) exige módulo nativo — **não fazer sem o
-      usuário aprovar**.
+> **Decisão do usuário:** o grupo usa o Telão durante ligações no Discord, então o som do Discord
+> não pode ir junto. Isso exige captura por processo: o usuário aprovou o módulo nativo
+> `loopback-capture` (versão fixa) no lugar do `audio: 'loopback'` do Electron. Esse recurso não
+> existe em Windows anterior ao build 20348, e nesse caso a opção de som fica bloqueada com aviso.
 
-**Aceite:** quem assiste ouve o som do vídeo compartilhado sem eco perceptível.
+- [ ] Checkbox "Compartilhar som" no seletor, bloqueado com aviso no Windows 10.
+- [ ] Capturar o som do sistema no main com `loopback-capture`, excluindo o processo raiz do
+      Discord (ou o próprio Telão, se o Discord estiver fechado). Se a detecção falhar, não
+      capturar: a ligação nunca pode vazar.
+- [ ] Publicar como `SCREEN_SHARE_AUDIO`; quem assiste ouve e tem slider de volume por stream.
+- [ ] **Risco de eco:** só um processo pode ser excluído, então o som dos streams recebidos no
+      próprio app entra na captura. Mitigação: silenciar os áudios recebidos enquanto a pessoa
+      compartilha som e mostrar um aviso.
+
+**Aceite:** quem assiste ouve o som do vídeo compartilhado sem eco perceptível e sem o som da
+ligação do Discord.
 
 ---
 
