@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import { DisconnectReason, Participant, Room, RoomEvent } from 'livekit-client'
+import { DisconnectReason, Participant, Room, RoomEvent, Track, VideoTrack } from 'livekit-client'
 import { fetchToken, JoinError, TokenError } from '../lib/token'
 
 export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected' | 'reconnecting'
@@ -9,10 +9,12 @@ export interface RoomParticipant {
   name: string
   isLocal: boolean
   isCameraOn: boolean
+  cameraTrack: VideoTrack | null
   isLive: boolean
 }
 
 interface UseRoom {
+  room: Room | null
   status: ConnectionStatus
   participants: RoomParticipant[]
   error: JoinError | null
@@ -29,6 +31,8 @@ const PARTICIPANT_EVENTS = [
   RoomEvent.TrackUnpublished,
   RoomEvent.TrackMuted,
   RoomEvent.TrackUnmuted,
+  RoomEvent.TrackSubscribed,
+  RoomEvent.TrackUnsubscribed,
   RoomEvent.LocalTrackPublished,
   RoomEvent.LocalTrackUnpublished
 ] as const
@@ -39,6 +43,7 @@ function toRoomParticipant(participant: Participant, isLocal: boolean): RoomPart
     name: participant.name || participant.identity,
     isLocal,
     isCameraOn: participant.isCameraEnabled,
+    cameraTrack: participant.getTrackPublication(Track.Source.Camera)?.videoTrack ?? null,
     isLive: participant.isScreenShareEnabled
   }
 }
@@ -52,6 +57,7 @@ function listParticipants(room: Room): RoomParticipant[] {
 
 export function useRoom(): UseRoom {
   const roomRef = useRef<Room | null>(null)
+  const [activeRoom, setActiveRoom] = useState<Room | null>(null)
   const [status, setStatus] = useState<ConnectionStatus>('disconnected')
   const [participants, setParticipants] = useState<RoomParticipant[]>([])
   const [error, setError] = useState<JoinError | null>(null)
@@ -86,6 +92,7 @@ export function useRoom(): UseRoom {
       // A failed connect() also lands here; the catch below reports that one.
       if (roomRef.current !== room) return
       roomRef.current = null
+      setActiveRoom(null)
       setParticipants([])
       setStatus('disconnected')
       if (reason !== DisconnectReason.CLIENT_INITIATED) setError('connection_lost')
@@ -102,6 +109,7 @@ export function useRoom(): UseRoom {
     }
 
     roomRef.current = room
+    setActiveRoom(room)
     refresh()
     setStatus('connected')
     return true
@@ -111,5 +119,5 @@ export function useRoom(): UseRoom {
     await roomRef.current?.disconnect()
   }, [])
 
-  return { status, participants, error, join, leave }
+  return { room: activeRoom, status, participants, error, join, leave }
 }
