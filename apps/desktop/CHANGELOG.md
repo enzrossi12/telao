@@ -1,5 +1,9 @@
 # Novidades do Telão
 
+## 0.1.5
+
+- Versão de teste da atualização automática, sem mudanças no app.
+
 ## 0.1.4
 
 - Atualização automática: a partir desta versão, o Telão baixa as novidades sozinho e avisa para
