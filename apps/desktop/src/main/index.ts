@@ -3,6 +3,7 @@ import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 import { registerCredentialsIpc } from './ipc/credentials'
 import { registerScreenIpc } from './ipc/screen'
+import { registerScreenAudioIpc } from './ipc/screenAudio'
 import { createTray } from './tray'
 import { loadWindowState, MIN_SIZE, saveWindowState } from './windowState'
 
@@ -88,6 +89,7 @@ if (!allowMultipleInstances && !app.requestSingleInstanceLock()) {
     app.setAppUserModelId('com.telao.app')
     registerCredentialsIpc()
     registerScreenIpc()
+    registerScreenAudioIpc()
     createWindow()
     createTray(showWindow)
   })
