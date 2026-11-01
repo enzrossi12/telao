@@ -7,16 +7,19 @@ const TABS: { kind: ScreenSource['kind']; label: string }[] = [
 ]
 
 interface ScreenPickerProps {
-  onPick: (sourceId: string) => void
+  onPick: (sourceId: string, withAudio: boolean) => void
   onCancel: () => void
 }
 
 function ScreenPicker({ onPick, onCancel }: ScreenPickerProps): React.JSX.Element {
   const [sources, setSources] = useState<ScreenSource[] | null>(null)
   const [activeKind, setActiveKind] = useState<ScreenSource['kind']>('window')
+  const [isAudioSupported, setIsAudioSupported] = useState(true)
+  const [withAudio, setWithAudio] = useState(false)
 
   useEffect(() => {
     window.telao.listScreenSources().then(setSources)
+    window.telao.isScreenAudioSupported().then(setIsAudioSupported)
   }, [])
 
   useEffect(() => {
@@ -70,7 +73,7 @@ function ScreenPicker({ onPick, onCancel }: ScreenPickerProps): React.JSX.Elemen
               key={source.id}
               type="button"
               className="screen-source"
-              onClick={() => onPick(source.id)}
+              onClick={() => onPick(source.id, isAudioSupported && withAudio)}
             >
               <img src={source.thumbnailDataUrl} alt="" />
               <span className="screen-source-name">
@@ -80,6 +83,21 @@ function ScreenPicker({ onPick, onCancel }: ScreenPickerProps): React.JSX.Elemen
             </button>
           ))}
         </div>
+
+        <footer className="screen-picker-footer">
+          <label>
+            <input
+              type="checkbox"
+              checked={isAudioSupported && withAudio}
+              disabled={!isAudioSupported}
+              onChange={(event) => setWithAudio(event.target.checked)}
+            />
+            Compartilhar som (sem o Discord)
+          </label>
+          {!isAudioSupported && (
+            <p>Compartilhar som exige Windows 11, para o som do Discord não ir junto.</p>
+          )}
+        </footer>
       </section>
     </div>
   )

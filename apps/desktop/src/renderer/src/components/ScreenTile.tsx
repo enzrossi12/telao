@@ -1,8 +1,10 @@
+import { ReactNode } from 'react'
 import { RoomParticipant } from '../hooks/useRoom'
 import TrackVideo from './TrackVideo'
 
 interface ScreenTileProps {
   participant: RoomParticipant
+  volumeControl: ReactNode
   onWatch: () => void
   onStopWatching: () => void
   onFocus: () => void
@@ -10,6 +12,7 @@ interface ScreenTileProps {
 
 function ScreenTile({
   participant,
+  volumeControl,
   onWatch,
   onStopWatching,
   onFocus
@@ -36,6 +39,7 @@ function ScreenTile({
       )}
       <span className="live-badge tile-badge">AO VIVO</span>
       <span className="tile-name">{isLocal ? 'Sua tela' : `Tela de ${name}`}</span>
+      {volumeControl && <div className="tile-volume">{volumeControl}</div>}
       {isWatchingScreen && !isLocal && (
         <button type="button" className="tile-action" onClick={onStopWatching}>
           Parar de assistir

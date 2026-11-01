@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { ReactNode, useEffect, useRef } from 'react'
 import { VideoTrack } from 'livekit-client'
 import { RoomParticipant } from '../hooks/useRoom'
 import TrackVideo from './TrackVideo'
@@ -6,6 +6,7 @@ import TrackVideo from './TrackVideo'
 interface FocusedScreenProps {
   participant: RoomParticipant
   track: VideoTrack
+  volumeControl: ReactNode
   onExit: () => void
   onStopWatching: () => void
 }
@@ -13,6 +14,7 @@ interface FocusedScreenProps {
 function FocusedScreen({
   participant,
   track,
+  volumeControl,
   onExit,
   onStopWatching
 }: FocusedScreenProps): React.JSX.Element {
@@ -39,6 +41,7 @@ function FocusedScreen({
       <span className="live-badge tile-badge">AO VIVO</span>
       <span className="tile-name">{isLocal ? 'Sua tela' : `Tela de ${name}`}</span>
       <div className="focused-actions" onDoubleClick={(event) => event.stopPropagation()}>
+        {volumeControl}
         <button type="button" className="tile-action-inline" onClick={onExit}>
           Sair do destaque
         </button>

@@ -12,12 +12,12 @@ function ScreenShareControl({
   screenShare,
   isSharing
 }: ScreenShareControlProps): React.JSX.Element {
-  const { isBusy, hasFailed, startSharing, stopSharing } = screenShare
+  const { isBusy, hasFailed, hasAudioFailed, startSharing, stopSharing } = screenShare
   const [isPickerOpen, setIsPickerOpen] = useState(false)
 
-  const handlePick = (sourceId: string): void => {
+  const handlePick = (sourceId: string, withAudio: boolean): void => {
     setIsPickerOpen(false)
-    startSharing(sourceId)
+    startSharing(sourceId, withAudio)
   }
 
   return (
@@ -25,6 +25,11 @@ function ScreenShareControl({
       {hasFailed && (
         <p className="camera-error" role="alert">
           Não foi possível compartilhar a tela.
+        </p>
+      )}
+      {hasAudioFailed && (
+        <p className="camera-error" role="alert">
+          A tela está sendo compartilhada, mas sem som.
         </p>
       )}
       <button

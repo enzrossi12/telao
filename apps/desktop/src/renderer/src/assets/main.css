@@ -331,6 +331,34 @@ button {
   gap: 8px;
 }
 
+.volume-slider {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  padding: 3px 8px;
+  background: rgb(0 0 0 / 60%);
+}
+
+.volume-slider input {
+  width: 80px;
+  accent-color: var(--accent);
+}
+
+.tile-volume {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+}
+
+.sound-notice {
+  padding: 8px;
+  background: var(--bg-hover);
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
 .tile-action-inline {
   padding: 4px 8px;
   background: rgb(0 0 0 / 60%);
@@ -568,6 +596,24 @@ button {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.screen-picker-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.screen-picker-footer label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.screen-picker-footer p {
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
 .diagnostics {
