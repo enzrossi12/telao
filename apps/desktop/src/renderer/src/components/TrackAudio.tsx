@@ -19,11 +19,15 @@ function TrackAudio({ track, volume, isMuted }: TrackAudioProps): React.JSX.Elem
     }
   }, [track])
 
+  // Runs after attach, which unmutes the element: the anti-echo mute must win.
   useEffect(() => {
-    if (audioRef.current) audioRef.current.volume = volume
-  }, [volume])
+    const audio = audioRef.current
+    if (!audio) return
+    audio.muted = isMuted
+    audio.volume = volume
+  }, [track, isMuted, volume])
 
-  return <audio ref={audioRef} autoPlay muted={isMuted} />
+  return <audio ref={audioRef} autoPlay />
 }
 
 export default TrackAudio
