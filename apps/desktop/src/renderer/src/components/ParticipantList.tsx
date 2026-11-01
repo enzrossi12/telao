@@ -1,16 +1,8 @@
+import { Video } from 'lucide-react'
 import { RoomParticipant } from '../hooks/useRoom'
 
 interface ParticipantListProps {
   participants: RoomParticipant[]
-}
-
-function CameraIcon(): React.JSX.Element {
-  return (
-    <svg className="participant-camera" viewBox="0 0 24 24" role="img" aria-label="Câmera ligada">
-      <rect x="3" y="6" width="13" height="12" rx="2" fill="currentColor" />
-      <path d="M17 10.5 21 8v8l-4-2.5z" fill="currentColor" />
-    </svg>
-  )
 }
 
 function ParticipantList({ participants }: ParticipantListProps): React.JSX.Element {
@@ -27,7 +19,9 @@ function ParticipantList({ participants }: ParticipantListProps): React.JSX.Elem
               {participant.name}
               {participant.isLocal && ' (você)'}
             </span>
-            {participant.isCameraOn && <CameraIcon />}
+            {participant.isCameraOn && (
+              <Video className="participant-camera" size={16} aria-label="Câmera ligada" />
+            )}
             {participant.isLive && <span className="live-badge">AO VIVO</span>}
           </li>
         ))}

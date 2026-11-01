@@ -1,3 +1,4 @@
+import { Video, VideoOff } from 'lucide-react'
 import { useCamera } from '../hooks/useCamera'
 
 interface CameraControlProps {
@@ -22,6 +23,7 @@ function CameraControl({ camera, isCameraOn }: CameraControlProps): React.JSX.El
         disabled={isBusy}
         onClick={() => setCameraEnabled(!isCameraOn)}
       >
+        {isCameraOn ? <VideoOff size={18} /> : <Video size={18} />}
         {isCameraOn ? 'Desligar câmera' : 'Câmera'}
       </button>
       {devices.length > 1 && (

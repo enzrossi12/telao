@@ -400,6 +400,12 @@ button {
   background: var(--bg-sidebar);
 }
 
+.toolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .camera-control {
   display: flex;
   min-width: 0;

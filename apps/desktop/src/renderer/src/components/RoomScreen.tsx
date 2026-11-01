@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { LogOut } from 'lucide-react'
 import { Room } from 'livekit-client'
 import { useCamera } from '../hooks/useCamera'
 import { RoomParticipant } from '../hooks/useRoom'
@@ -55,6 +56,7 @@ function RoomScreen({
             isSharing={localParticipant?.isLive ?? false}
           />
           <button type="button" className="leave-button" onClick={onLeave}>
+            <LogOut size={18} />
             Sair
           </button>
         </footer>

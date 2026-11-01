@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { ScreenShare, ScreenShareOff } from 'lucide-react'
 import { UseScreenShare } from '../hooks/useScreenShare'
 import ScreenPicker from './ScreenPicker'
 
@@ -13,6 +14,15 @@ function ScreenShareControl({
 }: ScreenShareControlProps): React.JSX.Element {
   const { isBusy, hasFailed, startSharing, stopSharing } = screenShare
   const [isPickerOpen, setIsPickerOpen] = useState(false)
+
+  useEffect(
+    () =>
+      window.telao.onToggleScreenShare(() => {
+        if (isSharing) stopSharing()
+        else setIsPickerOpen(true)
+      }),
+    [isSharing, stopSharing]
+  )
 
   const handlePick = (sourceId: string): void => {
     setIsPickerOpen(false)
@@ -33,6 +43,7 @@ function ScreenShareControl({
         disabled={isBusy}
         onClick={() => (isSharing ? stopSharing() : setIsPickerOpen(true))}
       >
+        {isSharing ? <ScreenShareOff size={18} /> : <ScreenShare size={18} />}
         {isSharing ? 'Parar de compartilhar' : 'Compartilhar tela'}
       </button>
       {isPickerOpen && <ScreenPicker onPick={handlePick} onCancel={() => setIsPickerOpen(false)} />}
