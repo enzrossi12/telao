@@ -114,20 +114,20 @@ menos de 1 s; o uso de memória não cresce ao ligar/desligar a câmera 20 vezes
 ---
 
 ## Fase 4 — Compartilhamento de tela (núcleo do app)
-- [ ] **Seletor próprio** estilo Discord: modal com abas "Aplicativos" e "Telas", miniaturas e
+- [x] **Seletor próprio** estilo Discord: modal com abas "Aplicativos" e "Telas", miniaturas e
       ícones vindos de `desktopCapturer.getSources` (no main, via IPC).
-- [ ] Fluxo: usuário escolhe a fonte → renderer envia o `id` ao main → main guarda a escolha
+- [x] Fluxo: usuário escolhe a fonte → renderer envia o `id` ao main → main guarda a escolha
       → renderer chama `setScreenShareEnabled(true, …)` → o `setDisplayMediaRequestHandler`
       do main entrega a fonte escolhida. Cancelar no modal não deve iniciar nada.
-- [ ] Publicar com `ScreenSharePresets.h720fps30`, `videoCodec: 'h264'`, simulcast ligado,
+- [x] Publicar com `ScreenSharePresets.h720fps30`, `videoCodec: 'h264'`, simulcast ligado,
       `contentHint: 'motion'`.
-- [ ] Tile de tela com selo "AO VIVO" e botão **"Assistir"**. Só assina o track ao clicar
+- [x] Tile de tela com selo "AO VIVO" e botão **"Assistir"**. Só assina o track ao clicar
       (economiza banda, igual ao Discord). Botão "Parar de assistir" desassina.
-- [ ] **Modo foco:** clicar num stream assistido o coloca em destaque; demais tiles viram uma
+- [x] **Modo foco:** clicar num stream assistido o coloca em destaque; demais tiles viram uma
       faixa embaixo. Duplo clique deixa a janela em tela cheia; `Esc` sai.
-- [ ] Ao parar de compartilhar (botão ou janela capturada fechada), remover o tile para todos.
-- [ ] Notificação do Windows: "Fulano está ao vivo" (só se a janela não estiver em foco).
-- [ ] Overlay de diagnóstico (atalho `Ctrl+Shift+D`): resolução, fps, bitrate e codec recebidos,
+- [x] Ao parar de compartilhar (botão ou janela capturada fechada), remover o tile para todos.
+- [x] Notificação do Windows: "Fulano está ao vivo" (só se a janela não estiver em foco).
+- [x] Overlay de diagnóstico (atalho `Ctrl+Shift+D`): resolução, fps, bitrate e codec recebidos,
       via `getStats`/`track.getReceiverStats()`.
 
 **Aceite:** compartilhando uma janela de jogo ou vídeo, quem assiste vê 1280×720 a ~30 fps com
