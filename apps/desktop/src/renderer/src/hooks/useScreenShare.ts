@@ -20,14 +20,11 @@ export interface UseScreenShare {
   setWatching: (identity: string, watching: boolean) => void
 }
 
-function handleRemotePublished(
+// The sound arrives after the video, possibly when someone is already watching.
+function subscribeLateScreenAudio(
   publication: RemoteTrackPublication,
   participant: RemoteParticipant
 ): void {
-  if (publication.source === Track.Source.ScreenShare && !document.hasFocus()) {
-    new Notification('Telão', { body: `${participant.name || participant.identity} está ao vivo` })
-  }
-  // The sound arrives after the video, possibly when someone is already watching.
   if (
     publication.source === Track.Source.ScreenShareAudio &&
     participant.getTrackPublication(Track.Source.ScreenShare)?.isSubscribed
@@ -53,10 +50,10 @@ export function useScreenShare(room: Room | null): UseScreenShare {
       audioRef.current = null
     }
 
-    room.on(RoomEvent.TrackPublished, handleRemotePublished)
+    room.on(RoomEvent.TrackPublished, subscribeLateScreenAudio)
     room.on(RoomEvent.LocalTrackUnpublished, handleLocalUnpublished)
     return () => {
-      room.off(RoomEvent.TrackPublished, handleRemotePublished)
+      room.off(RoomEvent.TrackPublished, subscribeLateScreenAudio)
       room.off(RoomEvent.LocalTrackUnpublished, handleLocalUnpublished)
       audioRef.current?.stop()
       audioRef.current = null

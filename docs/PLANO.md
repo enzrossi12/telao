@@ -126,7 +126,8 @@ menos de 1 s; o uso de memória não cresce ao ligar/desligar a câmera 20 vezes
 - [x] **Modo foco:** clicar num stream assistido o coloca em destaque; demais tiles viram uma
       faixa embaixo. Duplo clique deixa a janela em tela cheia; `Esc` sai.
 - [x] Ao parar de compartilhar (botão ou janela capturada fechada), remover o tile para todos.
-- [x] Notificação do Windows: "Fulano está ao vivo" (só se a janela não estiver em foco).
+- ~~Notificação do Windows: "Fulano está ao vivo" (só se a janela não estiver em foco).~~
+  Removida a pedido do usuário.
 - [x] Overlay de diagnóstico (atalho `Ctrl+Shift+D`): resolução, fps, bitrate e codec recebidos,
       via `getStats`/`track.getReceiverStats()`.
 
