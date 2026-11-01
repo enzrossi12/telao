@@ -30,6 +30,9 @@ Configurar o projeto: `lk cloud auth` (ou passar `--url`, `--api-key`, `--api-se
 As flags mudam entre versões: confira com `lk room join --help` e `lk load-test --help`
 antes de rodar.
 
+Os comandos acima usam a sala fixa `telao`. Uma sala criada no app tem um ID interno `sala-…`:
+com alguém dentro, descubra o ID com `lk room list` e use-o no lugar de `telao`.
+
 ## 3. O que verificar em cada teste
 - Lista de participantes correta nas duas pontas.
 - Overlay `Ctrl+Shift+D`: 1280×720, ~30 fps, codec H.264 na tela assistida.

@@ -72,3 +72,5 @@ Para o overlay (`Ctrl+Shift+D`), use as estatísticas do receiver/sender do trac
 - `addGrant({ roomJoin: true, room, canSubscribe: true, canPublish: true, canPublishData: false,
   canPublishSources: [TrackSource.CAMERA, TrackSource.SCREEN_SHARE, TrackSource.SCREEN_SHARE_AUDIO] })`.
 - `await at.toJwt()` (é assíncrono nas versões atuais).
+- `room` é o `roomId` aleatório guardado no Redis (`apps/token/lib/rooms.ts`), não o nome digitado.
+  Chamadas sem sala, de versões até a 0.1.5, usam a sala fixa de `ROOM_NAME`.

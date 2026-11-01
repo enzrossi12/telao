@@ -6,8 +6,8 @@ fechado de ~10 amigos. Serve **apenas** para:
 - compartilhar a tela (ou uma janela) em **720p a 30 fps**;
 - ligar a câmera.
 
-**Não tem** chamada de voz, microfone, chat de texto, contas de usuário, servidores/canais
-múltiplos, nem versão mobile/macOS/Linux. Não adicione nada disso sem o usuário pedir.
+**Não tem** chamada de voz, microfone, chat de texto, contas de usuário, nem versão
+mobile/macOS/Linux. Não adicione nada disso sem o usuário pedir.
 
 O plano completo, dividido em fases com critérios de aceite, está em `docs/PLANO.md`.
 **Sempre leia o plano antes de começar uma tarefa e trabalhe uma fase por vez.**
@@ -18,8 +18,9 @@ apps/desktop  → Electron + React + TypeScript (electron-vite). O app que os am
 apps/token    → Função serverless (Vercel) que valida a senha do grupo e emite o token do LiveKit.
 LiveKit Cloud → Servidor de mídia (SFU). Cada pessoa envia o stream uma vez; o SFU distribui.
 ```
-Fluxo: app pede token em `apps/token` (nome + senha do grupo) → conecta no LiveKit com o
-token → publica câmera/tela e assina os streams dos outros.
+Fluxo: app valida a senha do grupo em `apps/token` → a pessoa cria ou escolhe uma sala (guardada
+no Upstash Redis, com senha em hash) → app pede o token dessa sala → conecta no LiveKit → publica
+câmera/tela e assina os streams dos outros.
 
 ## Stack
 - Monorepo com **npm workspaces** (não usar pnpm/yarn).

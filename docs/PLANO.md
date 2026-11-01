@@ -17,7 +17,7 @@ compartilharem a tela (720p/30fps) ou ligarem a câmera. Sem voz.
 | App | Electron + React + TypeScript (electron-vite) |
 | Mídia | LiveKit Cloud (SFU). Self-host fica para o futuro, se necessário |
 | Token | Função serverless na Vercel, senha única do grupo |
-| Sala | Uma sala fixa (`telao`), configurável por variável de ambiente |
+| Sala | Salas criadas pelos usuários, com nome e senha (ver Fase 7.5) |
 | Tela | 720p, 30 fps, H.264, simulcast ligado |
 | Câmera | 720p, 30 fps, simulcast ligado |
 | Áudio | Sem microfone. Áudio da tela opcional (Fase 6) |
@@ -38,6 +38,8 @@ LIVEKIT_API_KEY=
 LIVEKIT_API_SECRET=
 GROUP_PASSWORD=
 ROOM_NAME=telao
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
 
 # apps/desktop (.env, prefixo exigido pelo electron-vite para o renderer)
 VITE_LIVEKIT_URL=wss://<seu-projeto>.livekit.cloud
@@ -198,6 +200,25 @@ sozinho, mantendo o login salvo.
 
 ---
 
+## Fase 7.5 — Salas com nome e senha
+
+> **Decisão do usuário:** fase adicionada depois do plano original, no modelo do Radmin. As salas
+> ficam num Upstash Redis gratuito, acessado por REST, sem dependência nova.
+
+- [ ] Depois da senha do grupo, escolher "Criar sala" ou "Entrar em uma sala".
+- [ ] Criar sala com nome (2–32 caracteres, sem diferenciar maiúsculas) e senha (4–64), guardada
+      como hash `scrypt`.
+- [ ] Sala expira depois de 7 dias sem ninguém entrar; cada entrada renova o prazo.
+- [ ] Cada sala é uma sala separada no LiveKit, com `roomId` aleatório.
+- [ ] Lembrar a última sala, com a senha cifrada por `safeStorage`.
+- [ ] Sair da sala volta à escolha de sala.
+- [ ] `POST /api/token` sem sala continua na sala fixa, para versões até a 0.1.5.
+
+**Aceite:** duas pessoas criam e entram numa sala em produção; senha errada e sala inexistente
+mostram erro; duas salas ao mesmo tempo não se misturam; sair e voltar traz os dados preenchidos.
+
+---
+
 ## Fase 8 — Teste com o grupo e ajuste fino
 - [ ] Teste de carga: 10 participantes (instâncias reais + bots do LiveKit CLI), 3 telas
       compartilhando, todos com câmera. Ver skill `testar-sala`.
@@ -215,5 +236,5 @@ sozinho, mantendo o login salvo.
 ---
 
 ## Fora do escopo (não fazer sem pedido explícito)
-Voz/microfone, chat de texto, várias salas, contas e cadastro, mobile, macOS/Linux, gravação,
+Voz/microfone, chat de texto, contas e cadastro, mobile, macOS/Linux, gravação,
 self-host do LiveKit, assinatura de código.
