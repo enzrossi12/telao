@@ -1,5 +1,11 @@
 # Novidades do Telão
 
+## 0.1.6
+
+- Salas: depois da senha do grupo, crie uma sala com nome e senha ou entre em uma que já existe.
+- A sala some depois de 7 dias sem ninguém entrar.
+- O app lembra a última sala que você usou.
+
 ## 0.1.5
 
 - Versão de teste da atualização automática, sem mudanças no app.
