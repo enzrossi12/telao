@@ -47,13 +47,13 @@ VITE_TOKEN_URL=https://<seu-app>.vercel.app/api/token
 ---
 
 ## Fase 0 — Estrutura do projeto
-- [ ] Inicializar git e `.gitignore` (node_modules, dist, out, .env, .vercel).
-- [ ] Criar monorepo com npm workspaces: `apps/desktop` e `apps/token`.
-- [ ] Gerar `apps/desktop` com o template electron-vite **react-ts**.
-- [ ] TypeScript `strict` em todos os workspaces; ESLint + Prettier na raiz.
-- [ ] Scripts na raiz: `typecheck`, `lint`, `format`.
-- [ ] Criar `.env.example` nos dois apps com as variáveis acima.
-- [ ] Configurar janela principal com `contextIsolation: true`, `sandbox: true`,
+- [x] Inicializar git e `.gitignore` (node_modules, dist, out, .env, .vercel).
+- [x] Criar monorepo com npm workspaces: `apps/desktop` e `apps/token`.
+- [x] Gerar `apps/desktop` com o template electron-vite **react-ts**.
+- [x] TypeScript `strict` em todos os workspaces; ESLint + Prettier na raiz.
+- [x] Scripts na raiz: `typecheck`, `lint`, `format`.
+- [x] Criar `.env.example` nos dois apps com as variáveis acima.
+- [x] Configurar janela principal com `contextIsolation: true`, `sandbox: true`,
       `nodeIntegration: false` e preload com `contextBridge` (ver skill `electron-seguro`).
 
 **Aceite:** `npm run dev -w apps/desktop` abre uma janela; `npm run typecheck` e
