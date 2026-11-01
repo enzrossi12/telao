@@ -1,0 +1,41 @@
+:root {
+  --bg: #1e1f24;
+  --text: #f2f3f5;
+  --text-muted: #a3a6ad;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.home {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.home h1 {
+  margin: 0;
+  font-size: 40px;
+}
+
+.home p {
+  margin: 0;
+  color: var(--text-muted);
+}
