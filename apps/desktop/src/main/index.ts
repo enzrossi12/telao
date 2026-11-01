@@ -1,7 +1,6 @@
-import { app, BrowserWindow, globalShortcut } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
-import { IPC } from '../shared/ipc'
 import { registerCredentialsIpc } from './ipc/credentials'
 import { registerScreenIpc } from './ipc/screen'
 import { createTray } from './tray'
@@ -70,11 +69,6 @@ function showWindow(): void {
   mainWindow?.focus()
 }
 
-function toggleScreenShare(): void {
-  showWindow()
-  mainWindow?.webContents.send(IPC.TOGGLE_SCREEN_SHARE)
-}
-
 // Dev-only switches for running several instances side by side (see skill testar-sala).
 if (!app.isPackaged && process.env['TELAO_USER_DATA']) {
   app.setPath('userData', process.env['TELAO_USER_DATA'])
@@ -90,16 +84,12 @@ if (!allowMultipleInstances && !app.requestSingleInstanceLock()) {
     isQuitting = true
   })
 
-  app.on('will-quit', () => {
-    globalShortcut.unregisterAll()
-  })
-
   app.whenReady().then(() => {
     app.setAppUserModelId('com.telao.app')
     registerCredentialsIpc()
     registerScreenIpc()
     createWindow()
-    createTray({ onOpen: showWindow, onToggleShare: toggleScreenShare })
+    createTray(showWindow)
   })
 
   app.on('window-all-closed', () => {

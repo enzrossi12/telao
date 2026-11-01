@@ -8,10 +8,5 @@ contextBridge.exposeInMainWorld('telao', {
     ipcRenderer.invoke(IPC.SAVE_CREDENTIALS, credentials),
   listScreenSources: (): Promise<ScreenSource[]> => ipcRenderer.invoke(IPC.LIST_SCREEN_SOURCES),
   selectScreenSource: (id: string): Promise<void> =>
-    ipcRenderer.invoke(IPC.SELECT_SCREEN_SOURCE, id),
-  onToggleScreenShare: (listener: () => void): (() => void) => {
-    const handler = (): void => listener()
-    ipcRenderer.on(IPC.TOGGLE_SCREEN_SHARE, handler)
-    return () => ipcRenderer.removeListener(IPC.TOGGLE_SCREEN_SHARE, handler)
-  }
+    ipcRenderer.invoke(IPC.SELECT_SCREEN_SOURCE, id)
 })

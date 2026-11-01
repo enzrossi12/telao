@@ -7,7 +7,6 @@ declare global {
       saveCredentials: (credentials: SavedCredentials) => Promise<void>
       listScreenSources: () => Promise<ScreenSource[]>
       selectScreenSource: (id: string) => Promise<void>
-      onToggleScreenShare: (listener: () => void) => () => void
     }
   }
 }
