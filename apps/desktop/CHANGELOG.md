@@ -1,5 +1,11 @@
 # Novidades do Telão
 
+## 0.1.4
+
+- Atualização automática: a partir desta versão, o Telão baixa as novidades sozinho e avisa para
+  reiniciar.
+- Removida a notificação do Windows quando alguém começa a compartilhar.
+
 ## 0.1.3
 
 - Agora clicar numa tela só seleciona: o compartilhamento começa no botão "Compartilhar", então
