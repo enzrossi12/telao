@@ -16,7 +16,8 @@ Passos:
 2. Subir a versão: `npm version <tipo> -w apps/desktop --no-git-tag-version`.
 3. Escrever as novidades em `apps/desktop/CHANGELOG.md` (em português, linguagem simples —
    é o que os amigos vão ler).
-4. Commit `chore(release): vX.Y.Z` e tag `vX.Y.Z`; `git push --follow-tags`.
+4. Commit `chore(release): vX.Y.Z`, tag anotada com `git tag -a vX.Y.Z -m vX.Y.Z` (o
+   `--follow-tags` ignora tags simples) e `git push --follow-tags`.
 5. Gerar os arquivos: `npm run build:win -w apps/desktop`.
 6. Publicar em Releases, de um destes jeitos (feito pelo usuário, que é quem tem acesso à conta):
    - **Pelo site:** em github.com/enzrossi12/telao/releases/new, escolher a tag `vX.Y.Z` e anexar
