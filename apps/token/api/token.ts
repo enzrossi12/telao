@@ -1,33 +1,14 @@
-import { createHash, randomBytes, timingSafeEqual } from 'node:crypto'
+import { randomBytes } from 'node:crypto'
 import { AccessToken, TrackSource } from 'livekit-server-sdk'
-
-// The group password is what protects this endpoint, not the origin: the app calls it from
-// file:// when packaged and from localhost in dev.
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type'
-}
-
-function jsonResponse(body: Record<string, string>, status: number): Response {
-  return Response.json(body, { status, headers: CORS_HEADERS })
-}
-
-function sha256(value: string): Buffer {
-  return createHash('sha256').update(value).digest()
-}
-
-// Hashing first gives timingSafeEqual two buffers of the same length for any input.
-function isPasswordValid(received: unknown, expected: string): boolean {
-  return typeof received === 'string' && timingSafeEqual(sha256(received), sha256(expected))
-}
+import { isPasswordValid, jsonResponse, preflightResponse, readBody } from '../lib/http.js'
+import { findRoom, isRoomNameValid, isRoomPasswordValid } from '../lib/rooms.js'
 
 function isNameValid(name: unknown): name is string {
   return typeof name === 'string' && name === name.trim() && name.length >= 2 && name.length <= 24
 }
 
 export function OPTIONS(): Response {
-  return new Response(null, { status: 204, headers: CORS_HEADERS })
+  return preflightResponse()
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -36,22 +17,33 @@ export async function POST(request: Request): Promise<Response> {
     return jsonResponse({ error: 'server_misconfigured' }, 500)
   }
 
-  let body: unknown
-  try {
-    body = await request.json()
-  } catch {
-    return jsonResponse({ error: 'invalid_body' }, 400)
-  }
-  if (typeof body !== 'object' || body === null) {
-    return jsonResponse({ error: 'invalid_body' }, 400)
-  }
+  const body = await readBody(request)
+  if (!body) return jsonResponse({ error: 'invalid_body' }, 400)
 
-  const { name, password } = body as Record<string, unknown>
+  const { name, password, roomName, roomPassword } = body
   if (!isPasswordValid(password, GROUP_PASSWORD)) {
     return jsonResponse({ error: 'invalid_password' }, 401)
   }
   if (!isNameValid(name)) {
     return jsonResponse({ error: 'invalid_name' }, 400)
+  }
+
+  // Versions up to 0.1.5 send no room and always join the fixed one.
+  let room = { name: 'Telão', roomId: process.env.ROOM_NAME || 'telao' }
+  if (roomName !== undefined) {
+    if (!isRoomNameValid(roomName) || !isRoomPasswordValid(roomPassword)) {
+      return jsonResponse({ error: 'invalid_room' }, 400)
+    }
+
+    try {
+      const found = await findRoom(roomName, roomPassword)
+      if (found === 'not_found') return jsonResponse({ error: 'room_not_found' }, 404)
+      if (found === 'wrong_password') return jsonResponse({ error: 'invalid_room_password' }, 403)
+      room = found
+    } catch (err) {
+      console.error('Room lookup failed', err)
+      return jsonResponse({ error: 'storage_unavailable' }, 500)
+    }
   }
 
   // The suffix keeps two friends with the same display name from sharing an identity.
@@ -63,7 +55,7 @@ export async function POST(request: Request): Promise<Response> {
   })
   accessToken.addGrant({
     roomJoin: true,
-    room: process.env.ROOM_NAME || 'telao',
+    room: room.roomId,
     canSubscribe: true,
     canPublish: true,
     canPublishData: false,
@@ -74,5 +66,5 @@ export async function POST(request: Request): Promise<Response> {
     ]
   })
 
-  return jsonResponse({ token: await accessToken.toJwt() }, 200)
+  return jsonResponse({ token: await accessToken.toJwt(), roomName: room.name }, 200)
 }
