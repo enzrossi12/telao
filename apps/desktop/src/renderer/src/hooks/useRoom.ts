@@ -93,7 +93,8 @@ export function useRoom(): UseRoom {
 
     try {
       await room.connect(import.meta.env.VITE_LIVEKIT_URL, token, { autoSubscribe: false })
-    } catch {
+    } catch (err) {
+      console.error('LiveKit connection failed', err)
       await room.disconnect()
       setError(navigator.onLine ? 'server' : 'offline')
       setStatus('disconnected')
