@@ -6,6 +6,7 @@ import { registerCredentialsIpc } from './ipc/credentials'
 import { registerScreenIpc } from './ipc/screen'
 import { registerScreenAudioIpc } from './ipc/screenAudio'
 import { createTray } from './tray'
+import { registerUpdater } from './updater'
 import { loadWindowState, MIN_SIZE, saveWindowState } from './windowState'
 
 let mainWindow: BrowserWindow | null = null
@@ -92,6 +93,7 @@ if (!allowMultipleInstances && !app.requestSingleInstanceLock()) {
     registerCredentialsIpc()
     registerScreenIpc()
     registerScreenAudioIpc()
+    registerUpdater()
     createWindow()
     createTray(showWindow)
   })

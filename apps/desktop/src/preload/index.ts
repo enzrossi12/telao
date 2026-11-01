@@ -4,6 +4,13 @@ import { IPC, SavedCredentials, ScreenAudioSupport, ScreenSource } from '../shar
 // Only specific functions go here, never ipcRenderer itself (see skill electron-seguro).
 contextBridge.exposeInMainWorld('telao', {
   getAppVersion: (): Promise<string> => ipcRenderer.invoke(IPC.GET_APP_VERSION),
+  getDownloadedUpdate: (): Promise<string | null> => ipcRenderer.invoke(IPC.GET_DOWNLOADED_UPDATE),
+  restartToUpdate: (): Promise<void> => ipcRenderer.invoke(IPC.RESTART_TO_UPDATE),
+  onUpdateDownloaded: (listener: (version: string) => void): (() => void) => {
+    const handler = (_event: IpcRendererEvent, version: string): void => listener(version)
+    ipcRenderer.on(IPC.UPDATE_DOWNLOADED, handler)
+    return () => ipcRenderer.removeListener(IPC.UPDATE_DOWNLOADED, handler)
+  },
   loadCredentials: (): Promise<SavedCredentials> => ipcRenderer.invoke(IPC.LOAD_CREDENTIALS),
   saveCredentials: (credentials: SavedCredentials): Promise<void> =>
     ipcRenderer.invoke(IPC.SAVE_CREDENTIALS, credentials),
