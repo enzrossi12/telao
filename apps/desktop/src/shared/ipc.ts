@@ -1,5 +1,6 @@
 // IPC channel names, shared by main and preload. Each channel also declares its input/output types.
 export const IPC = {
+  GET_APP_VERSION: 'app:get-version',
   LOAD_CREDENTIALS: 'credentials:load',
   SAVE_CREDENTIALS: 'credentials:save',
   LIST_SCREEN_SOURCES: 'screen:list-sources',

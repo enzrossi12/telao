@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { SavedCredentials } from '../../../shared/ipc'
 import { JoinError } from '../lib/token'
 
@@ -26,6 +26,11 @@ function LoginScreen({
   const [name, setName] = useState(initial.name)
   const [password, setPassword] = useState(initial.password)
   const [nameTooShort, setNameTooShort] = useState(false)
+  const [version, setVersion] = useState<string | null>(null)
+
+  useEffect(() => {
+    window.telao.getAppVersion().then(setVersion)
+  }, [])
 
   const handleSubmit = (event: FormEvent): void => {
     event.preventDefault()
@@ -72,6 +77,8 @@ function LoginScreen({
         <button type="submit" disabled={isConnecting}>
           {isConnecting ? 'Entrando…' : 'Entrar'}
         </button>
+
+        {version && <p className="login-version">Versão {version}</p>}
       </form>
     </main>
   )

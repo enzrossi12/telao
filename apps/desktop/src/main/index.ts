@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
+import { registerAppInfoIpc } from './ipc/appInfo'
 import { registerCredentialsIpc } from './ipc/credentials'
 import { registerScreenIpc } from './ipc/screen'
 import { registerScreenAudioIpc } from './ipc/screenAudio'
@@ -87,6 +88,7 @@ if (!allowMultipleInstances && !app.requestSingleInstanceLock()) {
 
   app.whenReady().then(() => {
     app.setAppUserModelId('com.telao.app')
+    registerAppInfoIpc()
     registerCredentialsIpc()
     registerScreenIpc()
     registerScreenAudioIpc()

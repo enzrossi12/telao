@@ -3,6 +3,7 @@ import { IPC, SavedCredentials, ScreenSource } from '../shared/ipc'
 
 // Only specific functions go here, never ipcRenderer itself (see skill electron-seguro).
 contextBridge.exposeInMainWorld('telao', {
+  getAppVersion: (): Promise<string> => ipcRenderer.invoke(IPC.GET_APP_VERSION),
   loadCredentials: (): Promise<SavedCredentials> => ipcRenderer.invoke(IPC.LOAD_CREDENTIALS),
   saveCredentials: (credentials: SavedCredentials): Promise<void> =>
     ipcRenderer.invoke(IPC.SAVE_CREDENTIALS, credentials),
