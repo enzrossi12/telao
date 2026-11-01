@@ -19,6 +19,8 @@ export const IPC = {
 export interface SavedCredentials {
   name: string
   password: string
+  roomName: string
+  roomPassword: string
 }
 
 // 'experimental': Windows 10 builds where process loopback works but is not officially supported.
