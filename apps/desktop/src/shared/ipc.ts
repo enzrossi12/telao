@@ -3,7 +3,9 @@ export const IPC = {
   LOAD_CREDENTIALS: 'credentials:load',
   SAVE_CREDENTIALS: 'credentials:save',
   LIST_SCREEN_SOURCES: 'screen:list-sources',
-  SELECT_SCREEN_SOURCE: 'screen:select-source'
+  SELECT_SCREEN_SOURCE: 'screen:select-source',
+  // Main to renderer: the global shortcut was pressed.
+  TOGGLE_SCREEN_SHARE: 'screen:toggle-share'
 } as const
 
 export interface SavedCredentials {

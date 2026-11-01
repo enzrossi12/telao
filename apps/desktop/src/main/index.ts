@@ -1,29 +1,49 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, globalShortcut } from 'electron'
 import { join } from 'path'
+import icon from '../../resources/icon.png?asset'
+import { IPC } from '../shared/ipc'
 import { registerCredentialsIpc } from './ipc/credentials'
 import { registerScreenIpc } from './ipc/screen'
+import { createTray } from './tray'
+import { loadWindowState, MIN_SIZE, saveWindowState } from './windowState'
 
 let mainWindow: BrowserWindow | null = null
+let isQuitting = false
 
 function createWindow(): void {
+  const { bounds, isMaximized } = loadWindowState()
+
   mainWindow = new BrowserWindow({
-    width: 1100,
-    height: 700,
+    ...bounds,
+    ...MIN_SIZE,
     show: false,
     autoHideMenuBar: true,
     backgroundColor: '#1e1f24',
     title: 'Telão',
+    icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
       sandbox: true,
       nodeIntegration: false,
-      webSecurity: true
+      webSecurity: true,
+      // Sharing keeps running while the window sits in the tray.
+      backgroundThrottling: false
     }
   })
 
+  if (isMaximized) mainWindow.maximize()
+
   mainWindow.on('ready-to-show', () => {
     mainWindow?.show()
+  })
+
+  // Closing only hides the window: the app leaves through the tray menu.
+  mainWindow.on('close', (event) => {
+    if (mainWindow) saveWindowState(mainWindow)
+    if (isQuitting) return
+    event.preventDefault()
+    mainWindow?.hide()
   })
 
   mainWindow.on('closed', () => {
@@ -44,6 +64,17 @@ function createWindow(): void {
   }
 }
 
+function showWindow(): void {
+  if (mainWindow?.isMinimized()) mainWindow.restore()
+  mainWindow?.show()
+  mainWindow?.focus()
+}
+
+function toggleScreenShare(): void {
+  showWindow()
+  mainWindow?.webContents.send(IPC.TOGGLE_SCREEN_SHARE)
+}
+
 // Dev-only switches for running several instances side by side (see skill testar-sala).
 if (!app.isPackaged && process.env['TELAO_USER_DATA']) {
   app.setPath('userData', process.env['TELAO_USER_DATA'])
@@ -53,9 +84,14 @@ const allowMultipleInstances = !app.isPackaged && process.env['TELAO_MULTI_INSTA
 if (!allowMultipleInstances && !app.requestSingleInstanceLock()) {
   app.quit()
 } else {
-  app.on('second-instance', () => {
-    if (mainWindow?.isMinimized()) mainWindow.restore()
-    mainWindow?.focus()
+  app.on('second-instance', showWindow)
+
+  app.on('before-quit', () => {
+    isQuitting = true
+  })
+
+  app.on('will-quit', () => {
+    globalShortcut.unregisterAll()
   })
 
   app.whenReady().then(() => {
@@ -63,6 +99,7 @@ if (!allowMultipleInstances && !app.requestSingleInstanceLock()) {
     registerCredentialsIpc()
     registerScreenIpc()
     createWindow()
+    createTray({ onOpen: showWindow, onToggleShare: toggleScreenShare })
   })
 
   app.on('window-all-closed', () => {
