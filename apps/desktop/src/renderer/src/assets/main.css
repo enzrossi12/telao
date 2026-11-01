@@ -670,6 +670,29 @@ button {
   font-size: 13px;
 }
 
+.update-banner {
+  position: fixed;
+  z-index: 8;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  padding: 8px 8px 8px 14px;
+  background: #000;
+  font-size: 14px;
+}
+
+.update-banner button {
+  padding: 6px 12px;
+  background: var(--accent);
+}
+
+.update-banner button:hover {
+  background: var(--accent-hover);
+}
+
 .diagnostics {
   position: absolute;
   z-index: 5;
