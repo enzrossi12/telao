@@ -14,6 +14,7 @@ interface ScreenPickerProps {
 function ScreenPicker({ onPick, onCancel }: ScreenPickerProps): React.JSX.Element {
   const [sources, setSources] = useState<ScreenSource[] | null>(null)
   const [activeKind, setActiveKind] = useState<ScreenSource['kind']>('window')
+  const [selectedId, setSelectedId] = useState<string | null>(null)
   const [audioSupport, setAudioSupport] = useState<ScreenAudioSupport>('full')
   const [withAudio, setWithAudio] = useState(false)
   const isAudioSupported = audioSupport !== 'none'
@@ -32,6 +33,8 @@ function ScreenPicker({ onPick, onCancel }: ScreenPickerProps): React.JSX.Elemen
   }, [onCancel])
 
   const visibleSources = sources?.filter(({ kind }) => kind === activeKind)
+  // A choice left behind in the other tab is off screen, so it must not be what gets shared.
+  const selectedSource = visibleSources?.find(({ id }) => id === selectedId)
 
   return (
     <div className="modal-backdrop" onClick={onCancel}>
@@ -73,8 +76,11 @@ function ScreenPicker({ onPick, onCancel }: ScreenPickerProps): React.JSX.Elemen
             <button
               key={source.id}
               type="button"
-              className="screen-source"
-              onClick={() => onPick(source.id, isAudioSupported && withAudio)}
+              className={
+                source.id === selectedId ? 'screen-source screen-source-selected' : 'screen-source'
+              }
+              aria-pressed={source.id === selectedId}
+              onClick={() => setSelectedId(source.id)}
             >
               <img src={source.thumbnailDataUrl} alt="" />
               <span className="screen-source-name">
@@ -86,27 +92,39 @@ function ScreenPicker({ onPick, onCancel }: ScreenPickerProps): React.JSX.Elemen
         </div>
 
         <footer className="screen-picker-footer">
-          <label>
-            <input
-              type="checkbox"
-              checked={isAudioSupported && withAudio}
-              disabled={!isAudioSupported}
-              onChange={(event) => setWithAudio(event.target.checked)}
-            />
-            Compartilhar som (sem o Discord)
-          </label>
-          {audioSupport === 'experimental' && (
-            <p>
-              No Windows 10 isso é experimental: confirme com quem assiste se o Discord ficou de
-              fora.
-            </p>
-          )}
-          {audioSupport === 'none' && (
-            <p>
-              Compartilhar som exige Windows 10 versão 2004 ou mais novo, para o som do Discord não
-              ir junto.
-            </p>
-          )}
+          <div className="screen-picker-options">
+            <label>
+              <input
+                type="checkbox"
+                checked={isAudioSupported && withAudio}
+                disabled={!isAudioSupported}
+                onChange={(event) => setWithAudio(event.target.checked)}
+              />
+              Compartilhar som (sem o Discord)
+            </label>
+            {audioSupport === 'experimental' && (
+              <p>
+                No Windows 10 isso é experimental: confirme com quem assiste se o Discord ficou de
+                fora.
+              </p>
+            )}
+            {audioSupport === 'none' && (
+              <p>
+                Compartilhar som exige Windows 10 versão 2004 ou mais novo, para o som do Discord
+                não ir junto.
+              </p>
+            )}
+          </div>
+          <button
+            type="button"
+            className="screen-picker-confirm"
+            disabled={!selectedSource}
+            onClick={() =>
+              selectedSource && onPick(selectedSource.id, isAudioSupported && withAudio)
+            }
+          >
+            Compartilhar
+          </button>
         </footer>
       </section>
     </div>
