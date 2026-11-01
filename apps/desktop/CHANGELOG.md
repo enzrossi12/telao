@@ -1,5 +1,11 @@
 # Novidades do Telão
 
+## 0.1.3
+
+- Agora clicar numa tela só seleciona: o compartilhamento começa no botão "Compartilhar", então
+  dá para trocar se escolher a errada.
+- Frase nova na tela de entrada.
+
 ## 0.1.2
 
 - Compartilhar som agora também pode ser usado no Windows 10 (versão 2004 ou mais nova), de forma
