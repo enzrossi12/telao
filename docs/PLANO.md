@@ -99,14 +99,14 @@ outra na lista; derrubar a rede mostra "Reconectando…" e volta sozinho.
 ---
 
 ## Fase 3 — Câmera
-- [ ] Botão "Câmera" na barra inferior liga/desliga a câmera.
-- [ ] Publicar em 720p30 com simulcast (`VideoPresets.h720`).
-- [ ] Seleção de dispositivo de câmera (menu ao lado do botão), lembrando a escolha.
-- [ ] Assinar automaticamente as câmeras dos outros (`TrackPublished` com fonte CAMERA).
-- [ ] Grade de blocos (tiles) responsiva: câmera ligada mostra o vídeo; desligada mostra
+- [x] Botão "Câmera" na barra inferior liga/desliga a câmera.
+- [x] Publicar em 720p30 com simulcast (`VideoPresets.h720`).
+- [x] Seleção de dispositivo de câmera (menu ao lado do botão), lembrando a escolha.
+- [x] Assinar automaticamente as câmeras dos outros (`TrackPublished` com fonte CAMERA).
+- [x] Grade de blocos (tiles) responsiva: câmera ligada mostra o vídeo; desligada mostra
       avatar com a inicial do nome.
-- [ ] Pré-visualização da própria câmera espelhada.
-- [ ] Limpar elementos `<video>` ao desassinar (`track.detach()`), sem vazamento de memória.
+- [x] Pré-visualização da própria câmera espelhada.
+- [x] Limpar elementos `<video>` ao desassinar (`track.detach()`), sem vazamento de memória.
 
 **Aceite:** com 3 instâncias, todas veem as câmeras umas das outras; ligar/desligar reflete em
 menos de 1 s; o uso de memória não cresce ao ligar/desligar a câmera 20 vezes.
