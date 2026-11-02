@@ -35,7 +35,7 @@ async function readVideo(track: VideoTrack): Promise<Reading | null> {
 async function readAudio(track: AudioTrack): Promise<Reading | null> {
   const stats = await readAudioStats(track)
   if (!stats) return null
-  const { codec, level, playback, output } = stats
+  const { codec, level, bufferMs, concealedPercent, playback, output } = stats
   return {
     bytes: stats.bytes,
     describe: (kbps) =>
@@ -43,6 +43,8 @@ async function readAudio(track: AudioTrack): Promise<Reading | null> {
         `${kbps} kbps`,
         codec,
         level !== null && `nível ${level.toFixed(3)}`,
+        bufferMs !== null && `atraso ${bufferMs} ms`,
+        concealedPercent !== null && `perda ${concealedPercent}%`,
         playback,
         output && `saída: ${output}`
       ]
