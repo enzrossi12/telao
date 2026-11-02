@@ -1,5 +1,10 @@
 # Novidades do Telão
 
+## 0.1.7
+
+- Correção: o som do stream não fica mais atrasado depois de pausas e trechos em silêncio.
+- O diagnóstico (`Ctrl+Shift+D`) agora mostra o atraso e a perda do som.
+
 ## 0.1.6
 
 - Salas: depois da senha do grupo, crie uma sala com nome e senha ou entre em uma que já existe.

@@ -1,6 +1,6 @@
 {
   "name": "desktop",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Telão: compartilhamento de tela e câmera para um grupo de amigos",
   "main": "./out/main/index.js",
   "author": "Telão",
