@@ -1,5 +1,17 @@
 # Novidades do Telão
 
+## 0.1.8
+
+- Visual novo: tema grafite, letra nova e o nome "telão" no topo.
+- Tema claro e escuro: o botão com sol, lua ou monitor troca o tema. No monitor, o Telão segue o
+  tema do Windows.
+- Tela cheia de verdade: botão no canto da tela que você assiste ou duplo clique. Os controles e
+  o mouse somem depois de alguns segundos parado, e o Esc sai.
+- Controles da tela reorganizados: "Parar de assistir" embaixo no meio e o volume embaixo à
+  direita.
+- Animações e avisos de carregamento: bolinha girando enquanto conecta ou entra na sala, e a
+  lista de telas carrega com cartões cinza no lugar.
+
 ## 0.1.7
 
 - Correção: o som do stream não fica mais atrasado depois de pausas e trechos em silêncio.
