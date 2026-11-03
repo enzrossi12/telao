@@ -366,6 +366,22 @@ button {
   border-radius: 0;
 }
 
+.focused-screen .tile-badge,
+.focused-screen .tile-name {
+  transition: opacity 120ms;
+}
+
+.focused-screen-idle {
+  cursor: none;
+}
+
+.focused-screen-idle .tile-badge,
+.focused-screen-idle .tile-name,
+.focused-screen.focused-screen-idle .stream-badge {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .focused-video {
   display: block;
   width: 100%;

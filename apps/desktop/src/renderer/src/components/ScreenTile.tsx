@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { EyeOff } from 'lucide-react'
+import { EyeOff, Maximize } from 'lucide-react'
 import { RoomParticipant } from '../hooks/useRoom'
 import IconButton from './IconButton'
 import TrackVideo from './TrackVideo'
@@ -10,6 +10,7 @@ interface ScreenTileProps {
   onWatch: () => void
   onStopWatching: () => void
   onFocus: () => void
+  onFullscreen: () => void
 }
 
 function ScreenTile({
@@ -17,7 +18,8 @@ function ScreenTile({
   volumeControl,
   onWatch,
   onStopWatching,
-  onFocus
+  onFocus,
+  onFullscreen
 }: ScreenTileProps): React.JSX.Element {
   const { name, isLocal, isWatchingScreen, screenTrack } = participant
 
@@ -41,14 +43,19 @@ function ScreenTile({
       )}
       <span className="live-badge tile-badge">AO VIVO</span>
       <span className="tile-name">{isLocal ? 'Sua tela' : `Tela de ${name}`}</span>
-      {isWatchingScreen && !isLocal && (
+      {isWatchingScreen && (
         <div className="stream-badge">
           {volumeControl}
-          <IconButton
-            label="Parar de assistir"
-            icon={<EyeOff size={16} />}
-            onClick={onStopWatching}
-          />
+          {screenTrack && (
+            <IconButton label="Tela cheia" icon={<Maximize size={16} />} onClick={onFullscreen} />
+          )}
+          {!isLocal && (
+            <IconButton
+              label="Parar de assistir"
+              icon={<EyeOff size={16} />}
+              onClick={onStopWatching}
+            />
+          )}
         </div>
       )}
     </article>

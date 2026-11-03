@@ -16,6 +16,7 @@ interface StageProps {
 
 function Stage({ participants, onSetWatching }: StageProps): React.JSX.Element {
   const [focusedIdentity, setFocusedIdentity] = useState<string | null>(null)
+  const [startFullscreen, setStartFullscreen] = useState(false)
   const [volumes, setVolumes] = useState<Record<string, number>>({})
 
   // Derived, so focus ends by itself when the stream stops or the viewer stops watching.
@@ -33,6 +34,11 @@ function Stage({ participants, onSetWatching }: StageProps): React.JSX.Element {
   )
 
   const volumeOf = (identity: string): number => volumes[identity] ?? DEFAULT_VOLUME
+
+  const focusScreen = (identity: string | null, fullscreen: boolean): void => {
+    setFocusedIdentity(identity)
+    setStartFullscreen(fullscreen)
+  }
 
   const renderVolume = ({ identity, name, isLocal, screenAudioTrack }: RoomParticipant) =>
     !isLocal &&
@@ -54,7 +60,8 @@ function Stage({ participants, onSetWatching }: StageProps): React.JSX.Element {
           volumeControl={renderVolume(participant)}
           onWatch={() => onSetWatching(participant.identity, true)}
           onStopWatching={() => onSetWatching(participant.identity, false)}
-          onFocus={() => setFocusedIdentity(participant.identity)}
+          onFocus={() => focusScreen(participant.identity, false)}
+          onFullscreen={() => focusScreen(participant.identity, true)}
         />
       )),
     ...participants.map((participant) => (
@@ -87,7 +94,8 @@ function Stage({ participants, onSetWatching }: StageProps): React.JSX.Element {
             participant={focused}
             track={focusedTrack}
             volumeControl={renderVolume(focused)}
-            onExit={() => setFocusedIdentity(null)}
+            startFullscreen={startFullscreen}
+            onExit={() => focusScreen(null, false)}
             onStopWatching={() => onSetWatching(focused.identity, false)}
           />
           <div className="tile-strip">{tiles}</div>
