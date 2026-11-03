@@ -1,4 +1,4 @@
-import { SavedCredentials, ScreenAudioSupport, ScreenSource } from '../shared/ipc'
+import { SavedCredentials, ScreenAudioSupport, ScreenSource, ThemePreference } from '../shared/ipc'
 
 declare global {
   interface Window {
@@ -15,6 +15,8 @@ declare global {
       startScreenAudio: () => Promise<void>
       stopScreenAudio: () => Promise<void>
       onScreenAudioChunk: (listener: (chunk: Uint8Array<ArrayBuffer>) => void) => () => void
+      getTheme: () => Promise<ThemePreference>
+      setTheme: (theme: ThemePreference) => Promise<void>
     }
   }
 }

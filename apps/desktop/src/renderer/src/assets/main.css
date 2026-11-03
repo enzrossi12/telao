@@ -23,11 +23,43 @@
   --live: #ff6b4a;
   --danger: #e5484d;
   --warning: #a8641a;
+  --focus-ring: rgb(237 237 239 / 45%);
+  --skeleton-shine: #303036;
+  --on-color: #ffffff;
+  /* Video areas stay dark in both themes, so what sits on them uses fixed colors. */
+  --media-bg: #09090b;
   --overlay: rgb(17 17 19 / 75%);
+  --on-media: #ededef;
+  --on-media-muted: #a1a1a9;
+  --media-hover: #2c2c32;
+  --media-ink: #111113;
   --radius: 10px;
   --radius-lg: 14px;
   --ease: 140ms ease;
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* nativeTheme.themeSource in the main process decides which one applies. */
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --bg: #f7f7f8;
+    --bg-sidebar: #eeeef0;
+    --bg-input: #ffffff;
+    --bg-raised: #e6e6e9;
+    --bg-hover: #dcdce0;
+    --border: #dcdce0;
+    --border-strong: #c2c2c8;
+    --text: #17171a;
+    --text-muted: #66666e;
+    --primary: #17171a;
+    --primary-hover: #000000;
+    --on-primary: #fafafa;
+    --live: #e04f2c;
+    --danger: #d43a40;
+    --focus-ring: rgb(23 23 26 / 40%);
+    --skeleton-shine: #f2f2f4;
+  }
 }
 
 * {
@@ -93,7 +125,7 @@ button:active:not(:disabled) {
 }
 
 :focus-visible {
-  outline: 2px solid rgb(237 237 239 / 45%);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -251,6 +283,38 @@ button:active:not(:disabled) {
   font-weight: 500;
 }
 
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 12px 8px 0;
+}
+
+.sidebar-footer .icon-button-tooltip {
+  right: auto;
+  left: 0;
+}
+
+.theme-corner {
+  position: fixed;
+  z-index: 7;
+  top: 14px;
+  right: 14px;
+}
+
+.theme-corner .icon-button-tooltip {
+  top: calc(100% + 8px);
+  bottom: auto;
+}
+
+.theme-toggle {
+  background: none;
+}
+
 .sidebar ul {
   display: flex;
   flex-direction: column;
@@ -338,6 +402,7 @@ button:active:not(:disabled) {
 .connection-banner {
   padding: 8px;
   background: var(--warning);
+  color: var(--on-color);
   font-size: 14px;
   font-weight: 600;
   text-align: center;
@@ -386,7 +451,7 @@ button:active:not(:disabled) {
 
 .tile-screen {
   border: 1px solid var(--border);
-  background: #09090b;
+  background: var(--media-bg);
 }
 
 .tile-focus-button {
@@ -402,19 +467,19 @@ button:active:not(:disabled) {
 }
 
 .watch-button {
-  background: var(--primary);
-  color: var(--on-primary);
+  background: var(--on-media);
+  color: var(--media-ink);
 }
 
 .watch-button:hover {
-  background: var(--primary-hover);
+  background: #ffffff;
 }
 
 .tile-status {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--text-muted);
+  color: var(--on-media-muted);
   font-size: 14px;
 }
 
@@ -425,6 +490,7 @@ button:active:not(:disabled) {
 .stream-control {
   border-radius: 999px;
   background: var(--overlay);
+  color: var(--on-media);
   backdrop-filter: blur(8px);
 }
 
@@ -478,7 +544,7 @@ button:active:not(:disabled) {
 }
 
 .stream-stop:hover {
-  background: var(--bg-hover);
+  background: var(--media-hover);
 }
 
 .stream-stop:active:not(:disabled) {
@@ -505,10 +571,12 @@ button:active:not(:disabled) {
   padding: 5px;
   border-radius: 50%;
   background: none;
+  color: var(--on-media-muted);
 }
 
-.stream-badge .icon-button:hover {
-  background: var(--bg-hover);
+.stream-badge .icon-button:hover:not(:disabled) {
+  background: var(--media-hover);
+  color: var(--on-media);
 }
 
 .stream-badge .icon-button-tooltip {
@@ -532,7 +600,7 @@ button:active:not(:disabled) {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: #09090b;
+  background: var(--media-bg);
 }
 
 .focused-screen:fullscreen {
@@ -573,7 +641,7 @@ button:active:not(:disabled) {
 
 .volume-slider input {
   width: 80px;
-  accent-color: var(--primary);
+  accent-color: var(--on-media);
 }
 
 .sound-notice {
@@ -634,6 +702,13 @@ button:active:not(:disabled) {
   white-space: nowrap;
 }
 
+/* Without video behind it, the name tag follows the theme instead of the dark video pill. */
+.tile:not(.tile-screen, :has(video)) .tile-name {
+  background: var(--bg-hover);
+  color: var(--text);
+  backdrop-filter: none;
+}
+
 .toolbar {
   display: flex;
   align-items: center;
@@ -670,7 +745,7 @@ button:active:not(:disabled) {
 .icon-button-danger,
 .icon-button-danger:hover:not(:disabled) {
   background: var(--danger);
-  color: var(--text);
+  color: var(--on-color);
 }
 
 .icon-button-leave:hover:not(:disabled) {
@@ -944,6 +1019,7 @@ button:active:not(:disabled) {
   border-radius: var(--radius);
   padding: 10px 12px;
   background: rgb(0 0 0 / 80%);
+  color: var(--on-media);
   font-family: Consolas, monospace;
   font-size: 12px;
 }
@@ -1036,7 +1112,7 @@ button:active:not(:disabled) {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: var(--on-media-muted);
   pointer-events: none;
 }
 
@@ -1057,7 +1133,12 @@ button:active:not(:disabled) {
 .skeleton {
   display: block;
   border-radius: 6px;
-  background: linear-gradient(90deg, var(--bg-hover) 0%, #303036 50%, var(--bg-hover) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--bg-hover) 0%,
+    var(--skeleton-shine) 50%,
+    var(--bg-hover) 100%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.4s linear infinite;
 }

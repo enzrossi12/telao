@@ -1,5 +1,11 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron'
-import { IPC, SavedCredentials, ScreenAudioSupport, ScreenSource } from '../shared/ipc'
+import {
+  IPC,
+  SavedCredentials,
+  ScreenAudioSupport,
+  ScreenSource,
+  ThemePreference
+} from '../shared/ipc'
 
 // Only specific functions go here, never ipcRenderer itself (see skill electron-seguro).
 contextBridge.exposeInMainWorld('telao', {
@@ -25,5 +31,7 @@ contextBridge.exposeInMainWorld('telao', {
     const handler = (_event: IpcRendererEvent, chunk: Uint8Array): void => listener(chunk)
     ipcRenderer.on(IPC.SCREEN_AUDIO_CHUNK, handler)
     return () => ipcRenderer.removeListener(IPC.SCREEN_AUDIO_CHUNK, handler)
-  }
+  },
+  getTheme: (): Promise<ThemePreference> => ipcRenderer.invoke(IPC.GET_THEME),
+  setTheme: (theme: ThemePreference): Promise<void> => ipcRenderer.invoke(IPC.SET_THEME, theme)
 })

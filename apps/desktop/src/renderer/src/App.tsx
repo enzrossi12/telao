@@ -4,6 +4,7 @@ import LobbyScreen from './components/LobbyScreen'
 import LoginScreen from './components/LoginScreen'
 import { RoomFormMode } from './components/RoomForm'
 import RoomScreen from './components/RoomScreen'
+import ThemeToggle from './components/ThemeToggle'
 import { useRoom } from './hooks/useRoom'
 import { JoinError, TokenError, verifyGroupKey } from './lib/token'
 
@@ -65,19 +66,7 @@ function App(): React.JSX.Element | null {
 
   if (!credentials) return null
 
-  if (!isLoggedIn) {
-    return (
-      <LoginScreen
-        initialName={credentials.name}
-        initialPassword={credentials.password}
-        isBusy={isVerifying}
-        error={loginError}
-        onSubmit={handleLogin}
-      />
-    )
-  }
-
-  return (
+  const screen = isLoggedIn ? (
     <LobbyScreen
       userName={credentials.name}
       savedRoomName={credentials.roomName}
@@ -91,6 +80,23 @@ function App(): React.JSX.Element | null {
         setIsLoggedIn(false)
       }}
     />
+  ) : (
+    <LoginScreen
+      initialName={credentials.name}
+      initialPassword={credentials.password}
+      isBusy={isVerifying}
+      error={loginError}
+      onSubmit={handleLogin}
+    />
+  )
+
+  return (
+    <>
+      <div className="theme-corner">
+        <ThemeToggle />
+      </div>
+      {screen}
+    </>
   )
 }
 

@@ -1,5 +1,6 @@
 import { Video } from 'lucide-react'
 import { RoomParticipant } from '../hooks/useRoom'
+import ThemeToggle from './ThemeToggle'
 
 interface ParticipantListProps {
   roomName: string
@@ -34,6 +35,9 @@ function ParticipantList({ roomName, participants }: ParticipantListProps): Reac
           </li>
         ))}
       </ul>
+      <div className="sidebar-footer">
+        <ThemeToggle />
+      </div>
     </aside>
   )
 }

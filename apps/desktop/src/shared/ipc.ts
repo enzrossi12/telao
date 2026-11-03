@@ -13,8 +13,15 @@ export const IPC = {
   START_SCREEN_AUDIO: 'screen-audio:start',
   STOP_SCREEN_AUDIO: 'screen-audio:stop',
   // Main to renderer: 16-bit PCM, stereo, 48 kHz.
-  SCREEN_AUDIO_CHUNK: 'screen-audio:chunk'
+  SCREEN_AUDIO_CHUNK: 'screen-audio:chunk',
+  GET_THEME: 'theme:get',
+  SET_THEME: 'theme:set'
 } as const
+
+// 'system' follows the Windows setting.
+export type ThemePreference = 'system' | 'light' | 'dark'
+
+export const THEME_PREFERENCES: readonly ThemePreference[] = ['system', 'light', 'dark']
 
 export interface SavedCredentials {
   name: string

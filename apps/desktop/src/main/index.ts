@@ -1,10 +1,11 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, nativeTheme } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 import { registerAppInfoIpc } from './ipc/appInfo'
 import { registerCredentialsIpc } from './ipc/credentials'
 import { registerScreenIpc } from './ipc/screen'
 import { registerScreenAudioIpc } from './ipc/screenAudio'
+import { applySavedTheme, registerThemeIpc, windowBackground } from './ipc/theme'
 import { createTray } from './tray'
 import { registerUpdater } from './updater'
 import { loadWindowState, MIN_SIZE, saveWindowState } from './windowState'
@@ -20,7 +21,7 @@ function createWindow(): void {
     ...MIN_SIZE,
     show: false,
     autoHideMenuBar: true,
-    backgroundColor: '#1e1f24',
+    backgroundColor: windowBackground(),
     title: 'Telão',
     icon,
     webPreferences: {
@@ -35,6 +36,9 @@ function createWindow(): void {
   })
 
   if (isMaximized) mainWindow.maximize()
+
+  // Keeps the area behind the page matching the theme while it resizes or reloads.
+  nativeTheme.on('updated', () => mainWindow?.setBackgroundColor(windowBackground()))
 
   mainWindow.on('ready-to-show', () => {
     mainWindow?.show()
@@ -91,7 +95,9 @@ if (!allowMultipleInstances && !app.requestSingleInstanceLock()) {
     // Shared with the installed app's shortcut. A dev run under electron.exe must not claim it, or
     // Windows ties the Electron icon to this ID and shows it for the installed app too.
     if (app.isPackaged) app.setAppUserModelId('com.telao.app')
+    applySavedTheme()
     registerAppInfoIpc()
+    registerThemeIpc()
     registerCredentialsIpc()
     registerScreenIpc()
     registerScreenAudioIpc()
