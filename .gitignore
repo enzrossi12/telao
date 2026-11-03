@@ -6,3 +6,5 @@ out/
 .env.*
 !.env.example
 *.log
+.vscode/
+.claude/settings.local.json
