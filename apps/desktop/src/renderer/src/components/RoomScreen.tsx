@@ -61,7 +61,7 @@ function RoomScreen({
           <IconButton
             label="Sair da sala"
             icon={<LogOut size={20} />}
-            className="icon-button-danger"
+            className="icon-button-leave"
             onClick={onLeave}
           />
         </footer>

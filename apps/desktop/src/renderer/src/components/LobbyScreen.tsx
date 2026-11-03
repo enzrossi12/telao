@@ -48,7 +48,7 @@ function LobbyScreen({
   return (
     <main className="login">
       <section className="login-card">
-        <h1>Telão</h1>
+        <h1 className="brand">telão</h1>
         <p className="login-subtitle">E aí, {userName}</p>
 
         {error && (
@@ -60,7 +60,7 @@ function LobbyScreen({
         <button type="button" onClick={() => openMode('create')}>
           Criar sala
         </button>
-        <button type="button" onClick={() => openMode('join')}>
+        <button type="button" className="login-alternative" onClick={() => openMode('join')}>
           Entrar em uma sala
         </button>
         <button type="button" className="login-secondary" onClick={onBack}>

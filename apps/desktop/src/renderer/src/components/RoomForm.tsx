@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react'
 import { JOIN_ERROR_MESSAGES, JoinError } from '../lib/token'
+import Spinner from './Spinner'
 
 export type RoomFormMode = 'create' | 'join'
 
@@ -83,6 +84,7 @@ function RoomForm({
         )}
 
         <button type="submit" disabled={isBusy}>
+          {isBusy && <Spinner />}
           {isBusy ? busy : action}
         </button>
         <button type="button" className="login-secondary" disabled={isBusy} onClick={onBack}>

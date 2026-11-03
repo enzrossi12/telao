@@ -1,7 +1,9 @@
 import { ReactNode } from 'react'
-import { EyeOff, Maximize } from 'lucide-react'
+import { Maximize } from 'lucide-react'
 import { RoomParticipant } from '../hooks/useRoom'
 import IconButton from './IconButton'
+import Spinner from './Spinner'
+import StopWatchingButton from './StopWatchingButton'
 import TrackVideo from './TrackVideo'
 
 interface ScreenTileProps {
@@ -30,7 +32,12 @@ function ScreenTile({
           Assistir
         </button>
       )}
-      {isWatchingScreen && !screenTrack && <span className="tile-status">Conectando…</span>}
+      {isWatchingScreen && !screenTrack && (
+        <span className="tile-status">
+          <Spinner />
+          Conectando…
+        </span>
+      )}
       {isWatchingScreen && screenTrack && (
         <button
           type="button"
@@ -41,22 +48,16 @@ function ScreenTile({
           <TrackVideo track={screenTrack} className="tile-video tile-video-screen" />
         </button>
       )}
-      <span className="live-badge tile-badge">AO VIVO</span>
+      <span className="live-badge tile-badge">Ao vivo</span>
       <span className="tile-name">{isLocal ? 'Sua tela' : `Tela de ${name}`}</span>
-      {isWatchingScreen && (
+      {isWatchingScreen && screenTrack && (
         <div className="stream-badge">
-          {volumeControl}
-          {screenTrack && (
-            <IconButton label="Tela cheia" icon={<Maximize size={16} />} onClick={onFullscreen} />
-          )}
-          {!isLocal && (
-            <IconButton
-              label="Parar de assistir"
-              icon={<EyeOff size={16} />}
-              onClick={onStopWatching}
-            />
-          )}
+          <IconButton label="Tela cheia" icon={<Maximize size={16} />} onClick={onFullscreen} />
         </div>
+      )}
+      {isWatchingScreen && !isLocal && <StopWatchingButton onClick={onStopWatching} />}
+      {isWatchingScreen && volumeControl && (
+        <div className="stream-control stream-volume">{volumeControl}</div>
       )}
     </article>
   )

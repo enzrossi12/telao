@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { JOIN_ERROR_MESSAGES, JoinError } from '../lib/token'
+import Spinner from './Spinner'
 
 interface LoginScreenProps {
   initialName: string
@@ -39,7 +40,7 @@ function LoginScreen({
   return (
     <main className="login">
       <form className="login-card" onSubmit={handleSubmit}>
-        <h1>Telão</h1>
+        <h1 className="brand">telão</h1>
         <p className="login-subtitle">Compartilha a bosta dessa tela</p>
 
         <label>
@@ -70,6 +71,7 @@ function LoginScreen({
         )}
 
         <button type="submit" disabled={isBusy}>
+          {isBusy && <Spinner />}
           {isBusy ? 'Verificando…' : 'Continuar'}
         </button>
 

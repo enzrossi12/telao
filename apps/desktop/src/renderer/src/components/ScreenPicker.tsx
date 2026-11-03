@@ -6,6 +6,8 @@ const TABS: { kind: ScreenSource['kind']; label: string }[] = [
   { kind: 'screen', label: 'Telas' }
 ]
 
+const SKELETON_COUNT = 6
+
 interface ScreenPickerProps {
   onPick: (sourceId: string, withAudio: boolean) => void
   onCancel: () => void
@@ -67,11 +69,17 @@ function ScreenPicker({ onPick, onCancel }: ScreenPickerProps): React.JSX.Elemen
           ))}
         </div>
 
-        {!visibleSources && <p className="screen-picker-message">Carregando…</p>}
         {visibleSources?.length === 0 && (
           <p className="screen-picker-message">Nada para compartilhar aqui.</p>
         )}
-        <div className="screen-picker-grid">
+        <div className="screen-picker-grid" aria-busy={!visibleSources}>
+          {!visibleSources &&
+            Array.from({ length: SKELETON_COUNT }, (_, index) => (
+              <div key={index} className="screen-source screen-source-skeleton" aria-hidden="true">
+                <span className="skeleton skeleton-thumbnail" />
+                <span className="skeleton skeleton-line" />
+              </div>
+            ))}
           {visibleSources?.map((source) => (
             <button
               key={source.id}

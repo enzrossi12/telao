@@ -1,8 +1,9 @@
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
-import { EyeOff, Maximize, Minimize, Minimize2 } from 'lucide-react'
+import { Maximize, Minimize, Minimize2 } from 'lucide-react'
 import { VideoTrack } from 'livekit-client'
 import { RoomParticipant } from '../hooks/useRoom'
 import IconButton from './IconButton'
+import StopWatchingButton from './StopWatchingButton'
 import TrackVideo from './TrackVideo'
 
 const IDLE_TIMEOUT_MS = 2500
@@ -74,24 +75,18 @@ function FocusedScreen({
       onMouseMove={wake}
     >
       <TrackVideo track={track} className="focused-video" />
-      <span className="live-badge tile-badge">AO VIVO</span>
+      <span className="live-badge tile-badge">Ao vivo</span>
       <span className="tile-name">{isLocal ? 'Sua tela' : `Tela de ${name}`}</span>
       <div className="stream-badge" onDoubleClick={(event) => event.stopPropagation()}>
-        {volumeControl}
         <IconButton
           label={isFullscreen ? 'Sair da tela cheia' : 'Tela cheia'}
           icon={isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
           onClick={toggleFullscreen}
         />
         <IconButton label="Sair do destaque" icon={<Minimize2 size={16} />} onClick={onExit} />
-        {!isLocal && (
-          <IconButton
-            label="Parar de assistir"
-            icon={<EyeOff size={16} />}
-            onClick={onStopWatching}
-          />
-        )}
       </div>
+      {!isLocal && <StopWatchingButton onClick={onStopWatching} />}
+      {volumeControl && <div className="stream-control stream-volume">{volumeControl}</div>}
     </div>
   )
 }
